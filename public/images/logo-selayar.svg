@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="48" height="48">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#15803d"/>
+      <stop offset="100%" stop-color="#166534"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+  </defs>
+  <!-- Outer Ring -->
+  <circle cx="50" cy="50" r="47" fill="#ffffff" stroke="url(#goldGrad)" stroke-width="4"/>
+  <!-- Inner Shield -->
+  <path d="M50 14 C68 14 78 22 78 44 C78 68 50 84 50 84 C50 84 22 68 22 44 C22 22 32 14 50 14 Z" fill="url(#shieldGrad)" stroke="#facc15" stroke-width="2"/>
+  <!-- Star at top of shield -->
+  <polygon points="50,22 52.5,29 60,29 54,33.5 56.5,41 50,36.5 43.5,41 46,33.5 40,29 47.5,29" fill="#fef08a"/>
+  <!-- Sea waves inside shield -->
+  <path d="M30 54 Q40 50 50 54 T70 54 L70 60 Q60 56 50 60 T30 60 Z" fill="#38bdf8"/>
+  <path d="M32 62 Q41 58 50 62 T68 62 L67 67 Q59 64 50 67 T33 67 Z" fill="#bae6fd"/>
+  <!-- Traditional boat / Phinisi sail -->
+  <polygon points="50,38 58,49 50,49" fill="#ffffff"/>
+  <polygon points="48,40 42,49 48,49" fill="#ffffff"/>
+  <rect x="49" y="37" width="2" height="13" fill="#ca8a04"/>
+</svg>

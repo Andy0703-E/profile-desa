@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="100%" height="100%">
+  <!-- Background Circle -->
+  <circle cx="160" cy="160" r="150" fill="#f1f5f9" />
+  
+  <!-- Suit Body -->
+  <path d="M70 310 C70 240 100 215 130 210 L190 210 C220 215 250 240 250 310 Z" fill="#24344d" />
+  
+  <!-- White Collared Shirt -->
+  <polygon points="160,280 130,210 190,210" fill="#ffffff" />
+  
+  <!-- Shirt Collar Wings -->
+  <polygon points="160,240 130,210 148,210" fill="#e2e8f0" />
+  <polygon points="160,240 190,210 172,210" fill="#cbd5e1" />
+  
+  <!-- Red Necktie -->
+  <polygon points="160,230 152,242 160,247 168,242" fill="#b91c1c" />
+  <polygon points="152,242 168,242 174,305 160,318 146,305" fill="#dc2626" />
+  <polygon points="160,247 168,242 174,305 160,318" fill="#b91c1c" />
+  
+  <!-- Suit Lapels -->
+  <polygon points="105,310 130,210 152,260 120,310" fill="#1b283b" />
+  <polygon points="215,310 190,210 168,260 200,310" fill="#1e2d42" />
+
+  <!-- Neck -->
+  <rect x="144" y="170" width="32" height="48" rx="6" fill="#e5aa7a" />
+  <path d="M144 195 C154 205 166 205 176 195 L176 210 L144 210 Z" fill="#d39260" opacity="0.5" />
+
+  <!-- Head Base -->
+  <ellipse cx="160" cy="140" rx="42" ry="52" fill="#f5be8e" />
+  <!-- Ears -->
+  <circle cx="118" cy="142" r="10" fill="#f5be8e" />
+  <circle cx="202" cy="142" r="10" fill="#f5be8e" />
+  <circle cx="118" cy="142" r="6" fill="#e5aa7a" />
+  <circle cx="202" cy="142" r="6" fill="#e5aa7a" />
+
+  <!-- Hair Back -->
+  <path d="M116 140 C116 88 135 78 160 78 C185 78 204 88 204 140 C204 120 195 96 160 96 C125 96 116 120 116 140 Z" fill="#2d221c" />
+  <!-- Hair Front Parted Modern Flat -->
+  <path d="M118 132 C116 100 134 82 160 82 C190 82 204 98 204 125 C198 108 184 100 166 100 C144 100 128 112 118 132 Z" fill="#3d2c23" />
+  <path d="M124 115 C132 102 148 94 164 94 C178 94 194 100 200 112 C192 102 178 98 164 98 C146 98 132 105 124 115 Z" fill="#4a362b" />
+</svg>

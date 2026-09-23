@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g5" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="60%" stop-color="#86efac"/>
+      <stop offset="100%" stop-color="#166534"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#g5)"/>
+  <!-- Road perspective -->
+  <polygon points="260,200 340,200 480,400 120,400" fill="#475569"/>
+  <!-- Road dashed line -->
+  <polygon points="296,200 304,200 308,400 292,400" fill="#facc15"/>
+  <text x="50%" y="85%" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="20" font-weight="600">Akses Jalan Poros Desa</text>
+</svg>
