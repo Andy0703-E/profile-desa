@@ -44,7 +44,7 @@
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
             <?php foreach ($umkmList as $u): ?>
                 <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column;">
-                    <div style="height: 180px; background: #f1f5f9; position: relative;">
+                    <a href="<?= base_url('umkm/' . $u['id']) ?>" style="display: block; height: 180px; background: #f1f5f9; position: relative;">
                         <?php $fotoU = !empty($u['foto']) ? $u['foto'] : 'images/berita-tani.webp'; ?>
                         <img src="<?= base_url($fotoU) ?>" alt="<?= esc($u['nama_usaha']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
                         <?php if ($u['is_unggulan']): ?>
@@ -57,10 +57,14 @@
                                 BUMDes
                             </span>
                         <?php endif; ?>
-                    </div>
+                    </a>
                     <div style="padding: 1.25rem; display: flex; flex-direction: column; flex-grow: 1;">
                         <span style="font-size: 0.75rem; font-weight: 700; color: #059669; text-transform: uppercase;"><?= esc($u['kategori']) ?></span>
-                        <h3 style="font-size: 1.05rem; font-weight: 700; color: #0f172a; margin: 0.25rem 0 0.5rem;"><?= esc($u['nama_usaha']) ?></h3>
+                        <h3 style="font-size: 1.05rem; font-weight: 700; color: #0f172a; margin: 0.25rem 0 0.5rem;">
+                            <a href="<?= base_url('umkm/' . $u['id']) ?>" style="color: inherit; text-decoration: none;">
+                                <?= esc($u['nama_usaha']) ?>
+                            </a>
+                        </h3>
                         <div style="font-size: 1.15rem; font-weight: 800; color: #0b6045; margin-bottom: 0.5rem;"><?= esc($u['harga']) ?></div>
                         <p style="font-size: 0.85rem; color: #64748b; line-height: 1.5; margin-bottom: 1rem; flex-grow: 1;">
                             <?= character_limiter(strip_tags($u['deskripsi']), 85) ?>
@@ -71,7 +75,7 @@
                             <div>Lokasi: <span style="color: #475569;"><?= esc($u['dusun']) ?></span></div>
                         </div>
 
-                        <!-- Tombol Hubungi WhatsApp -->
+                        <!-- Tombol Hubungi WhatsApp & Detail -->
                         <?php 
                             $waClean = preg_replace('/[^0-9]/', '', $u['whatsapp']);
                             if (substr($waClean, 0, 1) === '0') {
@@ -79,10 +83,16 @@
                             }
                             $pesanWa = urlencode("Halo, saya tertarik dengan produk " . $u['nama_usaha'] . " di Website Desa Batu Bingkung.");
                         ?>
-                        <a href="https://wa.me/<?= $waClean ?>?text=<?= $pesanWa ?>" target="_blank" 
-                           style="display: flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.65rem; border-radius: 8px; background: #25d366; color: #ffffff; font-weight: 700; font-size: 0.85rem; text-decoration: none;">
-                            <i data-lucide="phone" style="width: 15px; height: 15px;"></i> Pesan via WhatsApp
-                        </a>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <a href="<?= base_url('umkm/' . $u['id']) ?>" 
+                               style="display: flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.6rem; border-radius: 8px; background: #ecfdf5; color: #059669; font-weight: 700; font-size: 0.82rem; text-decoration: none; border: 1px solid #a7f3d0;">
+                                <i data-lucide="eye" style="width: 14px; height: 14px;"></i> Detail
+                            </a>
+                            <a href="https://wa.me/<?= $waClean ?>?text=<?= $pesanWa ?>" target="_blank" 
+                               style="display: flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.6rem; border-radius: 8px; background: #25d366; color: #ffffff; font-weight: 700; font-size: 0.82rem; text-decoration: none;">
+                                <i data-lucide="phone" style="width: 14px; height: 14px;"></i> WhatsApp
+                            </a>
+                        </div>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -99,15 +109,19 @@
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.75rem;">
             <?php foreach ($wisataList as $w): ?>
                 <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column;">
-                    <div style="height: 220px; background: #f1f5f9; position: relative;">
+                    <a href="<?= base_url('wisata/' . $w['slug']) ?>" style="display: block; height: 220px; background: #f1f5f9; position: relative;">
                         <?php $fotoW = !empty($w['foto']) ? $w['foto'] : 'images/pantai-ngapalohe.webp'; ?>
                         <img src="<?= base_url($fotoW) ?>" alt="<?= esc($w['nama']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
                         <span style="position: absolute; bottom: 12px; left: 12px; padding: 0.3rem 0.75rem; border-radius: 9999px; background: rgba(0,0,0,0.7); color: #fff; font-size: 0.75rem; font-weight: 600;">
                             <?= esc($w['kategori']) ?>
                         </span>
-                    </div>
+                    </a>
                     <div style="padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1;">
-                        <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem;"><?= esc($w['nama']) ?></h3>
+                        <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem;">
+                            <a href="<?= base_url('wisata/' . $w['slug']) ?>" style="color: inherit; text-decoration: none;">
+                                <?= esc($w['nama']) ?>
+                            </a>
+                        </h3>
                         <p style="font-size: 0.88rem; color: #64748b; line-height: 1.6; margin-bottom: 1rem; flex-grow: 1;">
                             <?= esc($w['deskripsi']) ?>
                         </p>
@@ -127,12 +141,18 @@
                             </div>
                         </div>
 
-                        <?php if (!empty($w['maps_url'])): ?>
-                            <a href="<?= esc($w['maps_url']) ?>" target="_blank" 
-                               style="display: flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.65rem; border-radius: 8px; background: #0b6045; color: #ffffff; font-weight: 600; font-size: 0.85rem; text-decoration: none;">
-                                <i data-lucide="map" style="width: 16px; height: 16px;"></i> Petunjuk Arah (Google Maps)
+                        <div style="display: grid; grid-template-columns: <?= !empty($w['maps_url']) ? '1fr 1fr' : '1fr' ?>; gap: 0.5rem;">
+                            <a href="<?= base_url('wisata/' . $w['slug']) ?>" 
+                               style="display: flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.65rem; border-radius: 8px; background: #ecfdf5; color: #059669; font-weight: 700; font-size: 0.85rem; text-decoration: none; border: 1px solid #a7f3d0;">
+                                <i data-lucide="info" style="width: 15px; height: 15px;"></i> Detail Wisata
                             </a>
-                        <?php endif; ?>
+                            <?php if (!empty($w['maps_url'])): ?>
+                                <a href="<?= esc($w['maps_url']) ?>" target="_blank" 
+                                   style="display: flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.65rem; border-radius: 8px; background: #0b6045; color: #ffffff; font-weight: 600; font-size: 0.85rem; text-decoration: none;">
+                                    <i data-lucide="map" style="width: 15px; height: 15px;"></i> Rute Maps
+                                </a>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             <?php endforeach; ?>

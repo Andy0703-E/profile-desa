@@ -484,12 +484,6 @@
                     <span>Peta Geospasial</span>
                 </a>
             </li>
-            <li>
-                <a href="<?= base_url('admin/dokumen') ?>" class="menu-link <?= strpos(uri_string(), 'admin/dokumen') === 0 ? 'active' : '' ?>">
-                    <i data-lucide="file-check" style="width: 18px; height: 18px;"></i>
-                    <span>Dokumen Publik</span>
-                </a>
-            </li>
 
             <li class="menu-header">Ekonomi & Wisata</li>
             <li>
@@ -537,19 +531,7 @@
                 </a>
             </li>
 
-            <li class="menu-header">Layanan & Aspirasi</li>
-            <li>
-                <a href="<?= base_url('admin/layanan') ?>" class="menu-link <?= strpos(uri_string(), 'admin/layanan') === 0 ? 'active' : '' ?>">
-                    <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
-                    <span>Layanan Surat</span>
-                </a>
-            </li>
-            <li>
-                <a href="<?= base_url('admin/pengajuan') ?>" class="menu-link <?= strpos(uri_string(), 'admin/pengajuan') === 0 ? 'active' : '' ?>">
-                    <i data-lucide="inbox" style="width: 18px; height: 18px;"></i>
-                    <span>Permohonan Surat</span>
-                </a>
-            </li>
+            <li class="menu-header">Aspirasi & Komunikasi</li>
             <li>
                 <a href="<?= base_url('admin/pengaduan') ?>" class="menu-link <?= strpos(uri_string(), 'admin/pengaduan') === 0 ? 'active' : '' ?>">
                     <i data-lucide="message-square-plus" style="width: 18px; height: 18px;"></i>

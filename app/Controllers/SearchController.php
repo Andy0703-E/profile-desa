@@ -19,7 +19,6 @@ class SearchController extends BaseController
         
         $results = [
             'berita'      => [],
-            'dokumen'     => [],
             'umkm'        => [],
             'wisata'      => [],
             'agenda'      => [],
@@ -33,11 +32,6 @@ class SearchController extends BaseController
                                              ->orLike('content', $q)
                                              ->where('status', 'published')
                                              ->limit(5)->find();
-
-            $docModel = new DokumenPublikModel();
-            $results['dokumen'] = $docModel->like('judul', $q)
-                                           ->orLike('nomor_dokumen', $q)
-                                           ->limit(5)->find();
 
             $umkmModel = new UmkmModel();
             $results['umkm'] = $umkmModel->like('nama_usaha', $q)

@@ -39,17 +39,12 @@ $routes->get('wisata/(:segment)', 'PotensiController::wisataDetail/$1');
 $routes->get('pembangunan', 'PembangunanController::index');
 $routes->get('pembangunan/(:segment)', 'PembangunanController::detail/$1');
 
-// 10. Informasi Publik & Dokumen Desa
-$routes->get('dokumen', 'DokumenController::index');
-$routes->get('dokumen/download/(:num)', 'DokumenController::download/$1');
+// Redirect Layanan & Dokumen ke Beranda
+$routes->addRedirect('dokumen', '/');
+$routes->addRedirect('layanan', '/');
+$routes->addRedirect('layanan/(:any)', '/');
 
-// 11. Layanan Administrasi Desa
-$routes->get('layanan', 'LayananController::index');
-$routes->get('layanan/cek-status', 'LayananController::cekStatus');
-$routes->get('layanan/(:segment)', 'LayananController::detail/$1');
-$routes->post('layanan/ajukan/(:segment)', 'LayananController::ajukan/$1');
-
-// 12. Pengaduan Warga
+// 10. Pengaduan Warga
 $routes->get('pengaduan', 'PengaduanController::index');
 $routes->post('pengaduan/kirim', 'PengaduanController::kirim');
 $routes->get('pengaduan/status', 'PengaduanController::status');

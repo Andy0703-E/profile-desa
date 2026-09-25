@@ -28,8 +28,8 @@
             </p>
 
             <div style="display: flex; gap: 0.85rem; flex-wrap: wrap;">
-                <a href="<?= base_url('layanan') ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: #10b981; color: #ffffff; font-weight: 700; font-size: 0.95rem; text-decoration: none; box-shadow: 0 4px 15px rgba(16,185,129,0.4);">
-                    <i data-lucide="file-text" style="width: 18px; height: 18px;"></i> Ajukan Surat Online
+                <a href="<?= base_url('pengaduan') ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: #10b981; color: #ffffff; font-weight: 700; font-size: 0.95rem; text-decoration: none; box-shadow: 0 4px 15px rgba(16,185,129,0.4);">
+                    <i data-lucide="message-square-plus" style="width: 18px; height: 18px;"></i> Pengaduan Warga
                 </a>
                 <a href="<?= base_url('transparansi') ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); color: #ffffff; font-weight: 700; font-size: 0.95rem; text-decoration: none; border: 1px solid rgba(255,255,255,0.25);">
                     <i data-lucide="pie-chart" style="width: 18px; height: 18px;"></i> APBDes TA 2026
@@ -45,24 +45,14 @@
 <!-- 2. Shortcut Link Layanan Cepat (Floating Cards) -->
 <section style="margin-top: -30px; position: relative; z-index: 10;">
     <div class="container">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
-            <a href="<?= base_url('layanan') ?>" style="background: #ffffff; padding: 1.25rem 1rem; border-radius: 14px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-decoration: none; display: flex; align-items: center; gap: 0.85rem; transition: transform 0.2s;">
-                <div style="width: 44px; height: 44px; border-radius: 10px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <i data-lucide="file-signature" style="width: 22px; height: 22px;"></i>
-                </div>
-                <div>
-                    <div style="font-size: 0.9rem; font-weight: 800; color: #0f172a;">Layanan Surat</div>
-                    <div style="font-size: 0.75rem; color: #64748b;">Administrasi warga</div>
-                </div>
-            </a>
-
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
             <a href="<?= base_url('pengaduan') ?>" style="background: #ffffff; padding: 1.25rem 1rem; border-radius: 14px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-decoration: none; display: flex; align-items: center; gap: 0.85rem; transition: transform 0.2s;">
-                <div style="width: 44px; height: 44px; border-radius: 10px; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <div style="width: 44px; height: 44px; border-radius: 10px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                     <i data-lucide="message-square" style="width: 22px; height: 22px;"></i>
                 </div>
                 <div>
                     <div style="font-size: 0.9rem; font-weight: 800; color: #0f172a;">Pengaduan</div>
-                    <div style="font-size: 0.75rem; color: #64748b;">Aspirasi masyarakat</div>
+                    <div style="font-size: 0.75rem; color: #64748b;">Aspirasi warga</div>
                 </div>
             </a>
 
@@ -76,6 +66,16 @@
                 </div>
             </a>
 
+            <a href="<?= base_url('peta') ?>" style="background: #ffffff; padding: 1.25rem 1rem; border-radius: 14px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-decoration: none; display: flex; align-items: center; gap: 0.85rem; transition: transform 0.2s;">
+                <div style="width: 44px; height: 44px; border-radius: 10px; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <i data-lucide="map-pin" style="width: 22px; height: 22px;"></i>
+                </div>
+                <div>
+                    <div style="font-size: 0.9rem; font-weight: 800; color: #0f172a;">Peta Geospasial</div>
+                    <div style="font-size: 0.75rem; color: #64748b;">Lokasi & sarana</div>
+                </div>
+            </a>
+
             <a href="<?= base_url('potensi') ?>" style="background: #ffffff; padding: 1.25rem 1rem; border-radius: 14px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-decoration: none; display: flex; align-items: center; gap: 0.85rem; transition: transform 0.2s;">
                 <div style="width: 44px; height: 44px; border-radius: 10px; background: #fdf2f8; color: #db2777; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                     <i data-lucide="shopping-bag" style="width: 22px; height: 22px;"></i>
@@ -86,13 +86,13 @@
                 </div>
             </a>
 
-            <a href="<?= base_url('dokumen') ?>" style="background: #ffffff; padding: 1.25rem 1rem; border-radius: 14px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-decoration: none; display: flex; align-items: center; gap: 0.85rem; transition: transform 0.2s;">
+            <a href="<?= base_url('pembangunan') ?>" style="background: #ffffff; padding: 1.25rem 1rem; border-radius: 14px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-decoration: none; display: flex; align-items: center; gap: 0.85rem; transition: transform 0.2s;">
                 <div style="width: 44px; height: 44px; border-radius: 10px; background: #f1f5f9; color: #475569; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <i data-lucide="file-check" style="width: 22px; height: 22px;"></i>
+                    <i data-lucide="hard-hat" style="width: 22px; height: 22px;"></i>
                 </div>
                 <div>
-                    <div style="font-size: 0.9rem; font-weight: 800; color: #0f172a;">Dokumen Desa</div>
-                    <div style="font-size: 0.75rem; color: #64748b;">Perdes, SK, LPJ</div>
+                    <div style="font-size: 0.9rem; font-weight: 800; color: #0f172a;">Pembangunan</div>
+                    <div style="font-size: 0.75rem; color: #64748b;">Proyek fisik desa</div>
                 </div>
             </a>
         </div>

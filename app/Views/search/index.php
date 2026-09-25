@@ -67,28 +67,6 @@
                     </div>
                 <?php endif; ?>
 
-                <!-- Dokumen -->
-                <?php if (!empty($results['dokumen'])): ?>
-                    <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 1.5rem;">
-                        <h3 style="font-size: 1.1rem; font-weight: 800; color: #0b6045; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <i data-lucide="file-text" style="width: 18px; height: 18px;"></i> Dokumen & Peraturan Desa (<?= count($results['dokumen']) ?>)
-                        </h3>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <?php foreach ($results['dokumen'] as $d): ?>
-                                <div style="padding: 0.75rem; border-radius: 8px; background: #f8fafc; border: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
-                                    <div>
-                                        <h4 style="font-size: 0.95rem; font-weight: 700; color: #0f172a;"><?= esc($d['judul']) ?></h4>
-                                        <span style="font-size: 0.78rem; color: #64748b;">No: <?= esc($d['nomor_dokumen']) ?> &bull; Tahun <?= esc($d['tahun']) ?></span>
-                                    </div>
-                                    <a href="<?= base_url('dokumen/download/' . $d['id']) ?>" style="padding: 0.4rem 0.8rem; background: #0b6045; color: #fff; font-size: 0.78rem; font-weight: 600; border-radius: 6px; text-decoration: none;">
-                                        Unduh
-                                    </a>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
                 <!-- UMKM -->
                 <?php if (!empty($results['umkm'])): ?>
                     <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 1.5rem;">
@@ -101,7 +79,7 @@
                                     <span style="font-size: 0.72rem; font-weight: 700; color: #059669; text-transform: uppercase;"><?= esc($u['kategori']) ?></span>
                                     <h4 style="font-size: 0.95rem; font-weight: 700; color: #0f172a; margin: 0.2rem 0;"><?= esc($u['nama_usaha']) ?></h4>
                                     <div style="font-size: 0.85rem; font-weight: 800; color: #059669; margin-bottom: 0.5rem;"><?= esc($u['harga']) ?></div>
-                                    <a href="<?= base_url('potensi') ?>" style="font-size: 0.78rem; color: #0b6045; font-weight: 600; text-decoration: none;">Lihat di Katalog &rarr;</a>
+                                    <a href="<?= base_url('umkm/' . $u['id']) ?>" style="font-size: 0.78rem; color: #0b6045; font-weight: 600; text-decoration: none;">Lihat Detail &rarr;</a>
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -120,7 +98,7 @@
                                     <span style="font-size: 0.72rem; font-weight: 700; color: #059669; text-transform: uppercase;"><?= esc($w['kategori']) ?></span>
                                     <h4 style="font-size: 0.95rem; font-weight: 700; color: #0f172a; margin: 0.2rem 0;"><?= esc($w['nama']) ?></h4>
                                     <p style="font-size: 0.8rem; color: #64748b;"><?= character_limiter(strip_tags($w['deskripsi']), 90) ?></p>
-                                    <a href="<?= base_url('potensi') ?>" style="font-size: 0.78rem; color: #0b6045; font-weight: 600; text-decoration: none; margin-top: 0.5rem; display: inline-block;">Lihat Wisata &rarr;</a>
+                                    <a href="<?= base_url('wisata/' . $w['slug']) ?>" style="font-size: 0.78rem; color: #0b6045; font-weight: 600; text-decoration: none; margin-top: 0.5rem; display: inline-block;">Lihat Wisata &rarr;</a>
                                 </div>
                             <?php endforeach; ?>
                         </div>

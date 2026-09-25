@@ -148,31 +148,36 @@
             display: flex;
             align-items: center;
             list-style: none;
-            gap: 0.85rem;
+            gap: 1rem;
             margin: 0;
             padding: 0;
             flex-wrap: nowrap;
         }
 
+        .desktop-nav > li {
+            position: relative;
+        }
+
         .desktop-nav a {
             color: rgba(255, 255, 255, 0.9);
-            font-size: 0.86rem;
+            font-size: 0.88rem;
             font-weight: 600;
-            padding: 0.35rem 0.2rem;
+            padding: 0.4rem 0.25rem;
             transition: color 0.15s ease;
             position: relative;
             white-space: nowrap;
-            text-align: center;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
         }
 
         .desktop-nav a:hover,
-        .desktop-nav li.active a {
+        .desktop-nav > li.active > a {
             color: #ffffff;
             font-weight: 700;
         }
 
-        .desktop-nav li.active a::after {
+        .desktop-nav > li.active > a::after {
             content: '';
             position: absolute;
             bottom: -2px;
@@ -181,6 +186,71 @@
             height: 2px;
             background-color: #34d399;
             border-radius: 2px;
+        }
+
+        /* Dropdown Sub Menu */
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .nav-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+            border: 1px solid #e2e8f0;
+            padding: 0.5rem 0;
+            min-width: 210px;
+            z-index: 1100;
+            margin-top: 8px;
+            list-style: none;
+        }
+
+        .nav-dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            height: 14px;
+        }
+
+        .nav-dropdown:hover .nav-dropdown-menu {
+            display: block;
+        }
+
+        .nav-dropdown-menu li {
+            width: 100%;
+        }
+
+        .nav-dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1rem;
+            color: #1e293b !important;
+            font-size: 0.84rem;
+            font-weight: 600;
+            text-align: left;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .nav-dropdown-menu a::after {
+            display: none !important;
+        }
+
+        .nav-dropdown-menu a:hover {
+            background: #f0fdf4;
+            color: #059669 !important;
+        }
+
+        .nav-dropdown-menu a i {
+            width: 15px;
+            height: 15px;
+            color: #059669;
         }
 
         .desktop-nav-search-btn {
@@ -252,17 +322,35 @@
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.25rem;
+        }
+
+        .mobile-drawer-heading {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6ee7b7;
+            padding: 0.6rem 0.75rem 0.2rem;
         }
 
         .mobile-drawer-list a {
-            display: block;
-            padding: 0.65rem 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 0.75rem;
             color: #ffffff;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
             border-radius: var(--radius-md);
             transition: background 0.15s;
+        }
+
+        .mobile-drawer-list a i {
+            width: 17px;
+            height: 17px;
+            color: #a7f3d0;
+            flex-shrink: 0;
         }
 
         .mobile-drawer-list a:hover {
@@ -512,39 +600,143 @@
                 <li class="<?= uri_string() === '' || uri_string() === '/' ? 'active' : '' ?>">
                     <a href="<?= base_url() ?>">Beranda</a>
                 </li>
-                <li class="<?= strpos(uri_string(), 'profil') === 0 || strpos(uri_string(), 'pemerintahan') === 0 ? 'active' : '' ?>">
-                    <a href="<?= base_url('profil') ?>">Profil</a>
+                
+                <!-- Sub Menu 1: Profil Desa -->
+                <li class="nav-dropdown <?= strpos(uri_string(), 'profil') === 0 || strpos(uri_string(), 'pemerintahan') === 0 ? 'active' : '' ?>">
+                    <a href="<?= base_url('profil') ?>">
+                        <span>Profil</span>
+                        <i data-lucide="chevron-down" style="width: 14px; height: 14px; opacity: 0.8;"></i>
+                    </a>
+                    <ul class="nav-dropdown-menu">
+                        <li>
+                            <a href="<?= base_url('profil') ?>">
+                                <i data-lucide="info"></i>
+                                <span>Profil Lengkap</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('profil#visi-misi') ?>">
+                                <i data-lucide="compass"></i>
+                                <span>Visi &amp; Misi</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('pemerintahan') ?>">
+                                <i data-lucide="users"></i>
+                                <span>Struktur Pemerintahan</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('profil#geografis') ?>">
+                                <i data-lucide="map-pin"></i>
+                                <span>Wilayah &amp; Dusun</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="<?= strpos(uri_string(), 'data-desa') === 0 || strpos(uri_string(), 'statistik') === 0 ? 'active' : '' ?>">
-                    <a href="<?= base_url('data-desa') ?>">Statistik</a>
+
+                <!-- Sub Menu 2: Informasi & Data -->
+                <li class="nav-dropdown <?= strpos(uri_string(), 'data-desa') === 0 || strpos(uri_string(), 'statistik') === 0 || strpos(uri_string(), 'transparansi') === 0 || strpos(uri_string(), 'peta') === 0 ? 'active' : '' ?>">
+                    <a href="<?= base_url('data-desa') ?>">
+                        <span>Informasi &amp; Data</span>
+                        <i data-lucide="chevron-down" style="width: 14px; height: 14px; opacity: 0.8;"></i>
+                    </a>
+                    <ul class="nav-dropdown-menu">
+                        <li>
+                            <a href="<?= base_url('data-desa') ?>">
+                                <i data-lucide="bar-chart-2"></i>
+                                <span>Statistik Kependudukan</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('transparansi') ?>">
+                                <i data-lucide="pie-chart"></i>
+                                <span>Transparansi APBDes</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('peta') ?>">
+                                <i data-lucide="map"></i>
+                                <span>Peta Geospasial</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="<?= strpos(uri_string(), 'transparansi') === 0 || strpos(uri_string(), 'apbdes') === 0 ? 'active' : '' ?>">
-                    <a href="<?= base_url('transparansi') ?>">APBDes</a>
+
+                <!-- Sub Menu 3: Potensi & Pembangunan -->
+                <li class="nav-dropdown <?= strpos(uri_string(), 'potensi') === 0 || strpos(uri_string(), 'umkm') === 0 || strpos(uri_string(), 'wisata') === 0 || strpos(uri_string(), 'pembangunan') === 0 ? 'active' : '' ?>">
+                    <a href="<?= base_url('potensi') ?>">
+                        <span>Potensi &amp; Karya</span>
+                        <i data-lucide="chevron-down" style="width: 14px; height: 14px; opacity: 0.8;"></i>
+                    </a>
+                    <ul class="nav-dropdown-menu">
+                        <li>
+                            <a href="<?= base_url('potensi') ?>">
+                                <i data-lucide="shopping-bag"></i>
+                                <span>Katalog UMKM</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('potensi') ?>#wisata">
+                                <i data-lucide="palmtree"></i>
+                                <span>Destinasi Wisata</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('pembangunan') ?>">
+                                <i data-lucide="hard-hat"></i>
+                                <span>Pembangunan Desa</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="<?= strpos(uri_string(), 'peta') === 0 ? 'active' : '' ?>">
-                    <a href="<?= base_url('peta') ?>">Peta</a>
+
+                <!-- Sub Menu 4: Kabar & Galeri -->
+                <li class="nav-dropdown <?= strpos(uri_string(), 'berita') === 0 || strpos(uri_string(), 'agenda') === 0 || strpos(uri_string(), 'galeri') === 0 ? 'active' : '' ?>">
+                    <a href="<?= base_url('berita') ?>">
+                        <span>Kabar Desa</span>
+                        <i data-lucide="chevron-down" style="width: 14px; height: 14px; opacity: 0.8;"></i>
+                    </a>
+                    <ul class="nav-dropdown-menu">
+                        <li>
+                            <a href="<?= base_url('berita') ?>">
+                                <i data-lucide="newspaper"></i>
+                                <span>Berita Terkini</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('agenda') ?>">
+                                <i data-lucide="calendar"></i>
+                                <span>Agenda Kegiatan</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('galeri') ?>">
+                                <i data-lucide="image"></i>
+                                <span>Galeri Foto</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('galeri?tab=video') ?>">
+                                <i data-lucide="video"></i>
+                                <span>Video Dokumentasi</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="<?= strpos(uri_string(), 'pembangunan') === 0 ? 'active' : '' ?>">
-                    <a href="<?= base_url('pembangunan') ?>">Pembangunan</a>
-                </li>
-                <li class="<?= strpos(uri_string(), 'potensi') === 0 || strpos(uri_string(), 'umkm') === 0 || strpos(uri_string(), 'wisata') === 0 ? 'active' : '' ?>">
-                    <a href="<?= base_url('potensi') ?>">UMKM & Wisata</a>
-                </li>
-                <li class="<?= strpos(uri_string(), 'berita') === 0 ? 'active' : '' ?>">
-                    <a href="<?= base_url('berita') ?>">Berita</a>
-                </li>
-                <li class="<?= strpos(uri_string(), 'layanan') === 0 ? 'active' : '' ?>">
-                    <a href="<?= base_url('layanan') ?>">Layanan</a>
-                </li>
+
                 <li class="<?= strpos(uri_string(), 'pengaduan') === 0 ? 'active' : '' ?>">
                     <a href="<?= base_url('pengaduan') ?>">Pengaduan</a>
                 </li>
-                <li class="<?= strpos(uri_string(), 'dokumen') === 0 ? 'active' : '' ?>">
-                    <a href="<?= base_url('dokumen') ?>">Dokumen</a>
-                </li>
+                
                 <li>
                     <a href="<?= base_url('search') ?>" title="Cari di website" class="desktop-nav-search-btn">
                         <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('auth/login') ?>" style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 1rem; border-radius: 9999px; background: #10b981; color: #ffffff !important; font-weight: 700; font-size: 0.82rem; text-decoration: none; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3); margin-left: 0.25rem;">
+                        <i data-lucide="log-in" style="width: 14px; height: 14px;"></i> Login Admin
                     </a>
                 </li>
             </ul>
@@ -558,20 +750,99 @@
         <!-- Mobile Drawer Menu -->
         <div class="mobile-drawer-menu" id="mobileDrawerMenu">
             <ul class="mobile-drawer-list">
-                <li><a href="<?= base_url() ?>">Beranda</a></li>
-                <li><a href="<?= base_url('profil') ?>">Profil Desa</a></li>
-                <li><a href="<?= base_url('data-desa') ?>">Statistik Kependudukan</a></li>
-                <li><a href="<?= base_url('transparansi') ?>">Transparansi APBDes</a></li>
-                <li><a href="<?= base_url('peta') ?>">Peta Geospasial</a></li>
-                <li><a href="<?= base_url('pembangunan') ?>">Pembangunan Desa</a></li>
-                <li><a href="<?= base_url('potensi') ?>">UMKM & Wisata</a></li>
-                <li><a href="<?= base_url('berita') ?>">Berita Desa</a></li>
-                <li><a href="<?= base_url('agenda') ?>">Agenda Kegiatan</a></li>
-                <li><a href="<?= base_url('galeri') ?>">Galeri Foto & Video</a></li>
-                <li><a href="<?= base_url('dokumen') ?>">Dokumen Publik</a></li>
-                <li><a href="<?= base_url('layanan') ?>">Layanan Persuratan</a></li>
-                <li><a href="<?= base_url('pengaduan') ?>">Pengaduan Warga</a></li>
-                <li><a href="<?= base_url('search') ?>">Pencarian Global</a></li>
+                <li>
+                    <a href="<?= base_url() ?>">
+                        <i data-lucide="home"></i>
+                        <span>Beranda</span>
+                    </a>
+                </li>
+                
+                <li class="mobile-drawer-heading">Profil &amp; Wilayah</li>
+                <li>
+                    <a href="<?= base_url('profil') ?>">
+                        <i data-lucide="info"></i>
+                        <span>Profil &amp; Visi Misi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('pemerintahan') ?>">
+                        <i data-lucide="users"></i>
+                        <span>Pemerintahan Desa</span>
+                    </a>
+                </li>
+
+                <li class="mobile-drawer-heading">Data &amp; Pembangunan</li>
+                <li>
+                    <a href="<?= base_url('data-desa') ?>">
+                        <i data-lucide="bar-chart-2"></i>
+                        <span>Statistik Kependudukan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('transparansi') ?>">
+                        <i data-lucide="pie-chart"></i>
+                        <span>Transparansi APBDes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('peta') ?>">
+                        <i data-lucide="map"></i>
+                        <span>Peta Geospasial</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('pembangunan') ?>">
+                        <i data-lucide="hard-hat"></i>
+                        <span>Pembangunan Desa</span>
+                    </a>
+                </li>
+
+                <li class="mobile-drawer-heading">Potensi &amp; Usaha</li>
+                <li>
+                    <a href="<?= base_url('potensi') ?>">
+                        <i data-lucide="shopping-bag"></i>
+                        <span>Lapak UMKM &amp; Wisata</span>
+                    </a>
+                </li>
+
+                <li class="mobile-drawer-heading">Publikasi &amp; Komunikasi</li>
+                <li>
+                    <a href="<?= base_url('berita') ?>">
+                        <i data-lucide="newspaper"></i>
+                        <span>Berita Desa</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('agenda') ?>">
+                        <i data-lucide="calendar"></i>
+                        <span>Agenda Kegiatan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('galeri') ?>">
+                        <i data-lucide="image"></i>
+                        <span>Galeri Foto &amp; Video</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('pengaduan') ?>">
+                        <i data-lucide="message-square-plus"></i>
+                        <span>Pengaduan Warga</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('search') ?>">
+                        <i data-lucide="search"></i>
+                        <span>Pencarian Global</span>
+                    </a>
+                </li>
+
+                <li style="border-top: 1px solid rgba(255,255,255,0.15); margin-top: 0.75rem; padding-top: 0.75rem;">
+                    <a href="<?= base_url('auth/login') ?>" style="background: #10b981; color: #fff; text-align: center; font-weight: 700; justify-content: center;">
+                        <i data-lucide="log-in" style="width: 16px; height: 16px;"></i>
+                        <span>Login Admin Portal</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </header>
@@ -636,7 +907,7 @@
                             <li><a href="<?= base_url('peta') ?>">Peta Geospasial Wilayah</a></li>
                             <li><a href="<?= base_url('pembangunan') ?>">Informasi Pembangunan</a></li>
                             <li><a href="<?= base_url('potensi') ?>">Lapak UMKM & Wisata</a></li>
-                            <li><a href="<?= base_url('dokumen') ?>">Dokumen & Peraturan Desa</a></li>
+                            <li><a href="<?= base_url('agenda') ?>">Agenda & Kegiatan Desa</a></li>
                             <li><a href="<?= base_url('pengaduan') ?>">Pengaduan Masyarakat</a></li>
                         </ul>
                     </div>
