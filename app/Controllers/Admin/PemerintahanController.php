@@ -42,7 +42,7 @@ class PemerintahanController extends BaseController
             'urutan'    => 'required|numeric',
             'deskripsi' => 'permit_empty',
             'status'    => 'required|in_list[aktif,tidak_aktif]',
-            'foto'      => 'permit_empty|uploaded[foto]|max_size[foto,2048]|ext_in[foto,jpg,jpeg,png]',
+            'foto'      => 'permit_empty|max_size[foto,2048]|ext_in[foto,jpg,jpeg,png,webp]',
         ];
 
         if (! $this->validate($rules)) {
@@ -100,7 +100,7 @@ class PemerintahanController extends BaseController
             'urutan'    => 'required|numeric',
             'deskripsi' => 'permit_empty',
             'status'    => 'required|in_list[aktif,tidak_aktif]',
-            'foto'      => 'permit_empty|uploaded[foto]|max_size[foto,2048]|ext_in[foto,jpg,jpeg,png]',
+            'foto'      => 'permit_empty|max_size[foto,2048]|ext_in[foto,jpg,jpeg,png,webp]',
         ];
 
         if (! $this->validate($rules)) {

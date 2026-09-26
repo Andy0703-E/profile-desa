@@ -37,7 +37,7 @@ class PotensiController extends BaseController
             'kategori'  => 'required|max_length[100]',
             'deskripsi' => 'required',
             'status'    => 'required|in_list[published,draft]',
-            'image'     => 'permit_empty|uploaded[image]|max_size[image,2048]|ext_in[image,jpg,jpeg,png,webp]',
+            'image'     => 'permit_empty|max_size[image,2048]|ext_in[image,jpg,jpeg,png,webp]',
         ];
 
         if (! $this->validate($rules)) {
@@ -96,7 +96,7 @@ class PotensiController extends BaseController
             'kategori'  => 'required|max_length[100]',
             'deskripsi' => 'required',
             'status'    => 'required|in_list[published,draft]',
-            'image'     => 'permit_empty|uploaded[image]|max_size[image,2048]|ext_in[image,jpg,jpeg,png,webp]',
+            'image'     => 'permit_empty|max_size[image,2048]|ext_in[image,jpg,jpeg,png,webp]',
         ];
 
         if (! $this->validate($rules)) {

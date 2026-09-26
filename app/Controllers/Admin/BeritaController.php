@@ -49,7 +49,7 @@ class BeritaController extends BaseController
             'excerpt'     => 'required|max_length[500]',
             'content'     => 'required',
             'status'      => 'required|in_list[draft,published,archived]',
-            'thumbnail'   => 'permit_empty|uploaded[thumbnail]|max_size[thumbnail,2048]|ext_in[thumbnail,jpg,jpeg,png,webp]',
+            'thumbnail'   => 'permit_empty|max_size[thumbnail,2048]|ext_in[thumbnail,jpg,jpeg,png,webp]',
         ];
 
         if (! $this->validate($rules)) {
@@ -116,7 +116,7 @@ class BeritaController extends BaseController
             'excerpt'     => 'required|max_length[500]',
             'content'     => 'required',
             'status'      => 'required|in_list[draft,published,archived]',
-            'thumbnail'   => 'permit_empty|uploaded[thumbnail]|max_size[thumbnail,2048]|ext_in[thumbnail,jpg,jpeg,png,webp]',
+            'thumbnail'   => 'permit_empty|max_size[thumbnail,2048]|ext_in[thumbnail,jpg,jpeg,png,webp]',
         ];
 
         if (! $this->validate($rules)) {

@@ -101,7 +101,7 @@ class GaleriController extends BaseController
             'category_id' => 'required|numeric',
             'description' => 'permit_empty|max_length[500]',
             'status'      => 'required|in_list[published,draft]',
-            'image'       => 'permit_empty|uploaded[image]|max_size[image,3072]|ext_in[image,jpg,jpeg,png,webp]',
+            'image'       => 'permit_empty|max_size[image,3072]|ext_in[image,jpg,jpeg,png,webp]',
         ];
 
         if (! $this->validate($rules)) {
