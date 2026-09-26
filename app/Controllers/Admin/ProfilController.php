@@ -26,14 +26,16 @@ class ProfilController extends BaseController
     {
         $rules = [
             'nama_desa'       => 'required|min_length[3]|max_length[150]',
-            'slogan'          => 'required|max_length[255]',
-            'motto'           => 'required|max_length[255]',
-            'jumlah_penduduk' => 'required|numeric',
-            'jumlah_kk'       => 'required|numeric',
+            'slogan'          => 'permit_empty|max_length[255]',
+            'motto'           => 'permit_empty|max_length[255]',
+            'jumlah_penduduk' => 'permit_empty|numeric',
+            'jumlah_kk'       => 'permit_empty|numeric',
+            'email'           => 'permit_empty|valid_email|max_length[100]',
+            'telepon'         => 'permit_empty|max_length[50]',
         ];
 
         if (! $this->validate($rules)) {
-            return redirect()->back()->withInput()->with('error', 'Terdapat kesalahan pada input. Silakan periksa kembali.');
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $desaModel = new DesaModel();

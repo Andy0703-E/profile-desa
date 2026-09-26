@@ -31,6 +31,25 @@ class ApbdesController extends BaseController
 
     public function store()
     {
+        $rules = [
+            'tahun'                => 'required|numeric|exact_length[4]',
+            'judul'                => 'required|min_length[3]|max_length[200]',
+            'jenis'                => 'required|in_list[awal,perubahan,laporan]',
+            'total_pendapatan'     => 'permit_empty',
+            'realisasi_pendapatan' => 'permit_empty',
+            'total_belanja'        => 'permit_empty',
+            'realisasi_belanja'    => 'permit_empty',
+            'total_pembiayaan'     => 'permit_empty',
+            'realisasi_pembiayaan' => 'permit_empty',
+            'status'               => 'permit_empty|in_list[draft,final]',
+            'keterangan'           => 'permit_empty',
+            'file_pdf'             => 'permit_empty|max_size[file_pdf,5120]|ext_in[file_pdf,pdf]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $apbdesModel = new ApbdesModel();
 
         $filePdf = null;
@@ -42,21 +61,21 @@ class ApbdesController extends BaseController
         }
 
         $id = $apbdesModel->insert([
-            'tahun'                => $this->request->getPost('tahun'),
-            'judul'                => $this->request->getPost('judul'),
-            'jenis'                => $this->request->getPost('jenis'),
-            'total_pendapatan'     => (int) str_replace(['.', ','], '', $this->request->getPost('total_pendapatan')),
-            'realisasi_pendapatan' => (int) str_replace(['.', ','], '', $this->request->getPost('realisasi_pendapatan')),
-            'total_belanja'        => (int) str_replace(['.', ','], '', $this->request->getPost('total_belanja')),
-            'realisasi_belanja'    => (int) str_replace(['.', ','], '', $this->request->getPost('realisasi_belanja')),
-            'total_pembiayaan'     => (int) str_replace(['.', ','], '', $this->request->getPost('total_pembiayaan')),
-            'realisasi_pembiayaan' => (int) str_replace(['.', ','], '', $this->request->getPost('realisasi_pembiayaan')),
+            'tahun'                => (string) $this->request->getPost('tahun'),
+            'judul'                => (string) $this->request->getPost('judul'),
+            'jenis'                => (string) $this->request->getPost('jenis'),
+            'total_pendapatan'     => (int) str_replace(['.', ','], '', (string) $this->request->getPost('total_pendapatan')),
+            'realisasi_pendapatan' => (int) str_replace(['.', ','], '', (string) $this->request->getPost('realisasi_pendapatan')),
+            'total_belanja'        => (int) str_replace(['.', ','], '', (string) $this->request->getPost('total_belanja')),
+            'realisasi_belanja'    => (int) str_replace(['.', ','], '', (string) $this->request->getPost('realisasi_belanja')),
+            'total_pembiayaan'     => (int) str_replace(['.', ','], '', (string) $this->request->getPost('total_pembiayaan')),
+            'realisasi_pembiayaan' => (int) str_replace(['.', ','], '', (string) $this->request->getPost('realisasi_pembiayaan')),
             'file_pdf'             => $filePdf,
-            'status'               => $this->request->getPost('status') ?? 'final',
-            'keterangan'           => $this->request->getPost('keterangan'),
+            'status'               => (string) ($this->request->getPost('status') ?? 'final'),
+            'keterangan'           => (string) $this->request->getPost('keterangan'),
         ]);
 
-        return redirect()->to('/admin/apbdes/detail/' . $id)->with('success', 'Data APBDes berhasil disimpan! Silakan kelola rincian item rekening.');
+        return redirect()->to(base_url('admin/apbdes/detail/' . $id))->with('success', 'Data APBDes berhasil disimpan! Silakan kelola rincian item rekening.');
     }
 
     public function edit($id)
@@ -64,7 +83,7 @@ class ApbdesController extends BaseController
         $apbdesModel = new ApbdesModel();
         $item = $apbdesModel->find($id);
         if (!$item) {
-            return redirect()->to('/admin/apbdes')->with('error', 'Data tidak ditemukan');
+            return redirect()->to(base_url('admin/apbdes'))->with('error', 'Data tidak ditemukan');
         }
 
         return view('admin/apbdes/form', [
@@ -75,21 +94,39 @@ class ApbdesController extends BaseController
 
     public function update($id)
     {
+        $rules = [
+            'tahun'                => 'required|numeric|exact_length[4]',
+            'judul'                => 'required|min_length[3]|max_length[200]',
+            'jenis'                => 'required|in_list[awal,perubahan,laporan]',
+            'total_pendapatan'     => 'permit_empty',
+            'realisasi_pendapatan' => 'permit_empty',
+            'total_belanja'        => 'permit_empty',
+            'realisasi_belanja'    => 'permit_empty',
+            'total_pembiayaan'     => 'permit_empty',
+            'realisasi_pembiayaan' => 'permit_empty',
+            'status'               => 'permit_empty|in_list[draft,final]',
+            'keterangan'           => 'permit_empty',
+            'file_pdf'             => 'permit_empty|max_size[file_pdf,5120]|ext_in[file_pdf,pdf]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $apbdesModel = new ApbdesModel();
-        $item = $apbdesModel->find($id);
 
         $data = [
-            'tahun'                => $this->request->getPost('tahun'),
-            'judul'                => $this->request->getPost('judul'),
-            'jenis'                => $this->request->getPost('jenis'),
-            'total_pendapatan'     => (int) str_replace(['.', ','], '', $this->request->getPost('total_pendapatan')),
-            'realisasi_pendapatan' => (int) str_replace(['.', ','], '', $this->request->getPost('realisasi_pendapatan')),
-            'total_belanja'        => (int) str_replace(['.', ','], '', $this->request->getPost('total_belanja')),
-            'realisasi_belanja'    => (int) str_replace(['.', ','], '', $this->request->getPost('realisasi_belanja')),
-            'total_pembiayaan'     => (int) str_replace(['.', ','], '', $this->request->getPost('total_pembiayaan')),
-            'realisasi_pembiayaan' => (int) str_replace(['.', ','], '', $this->request->getPost('realisasi_pembiayaan')),
-            'status'               => $this->request->getPost('status') ?? 'final',
-            'keterangan'           => $this->request->getPost('keterangan'),
+            'tahun'                => (string) $this->request->getPost('tahun'),
+            'judul'                => (string) $this->request->getPost('judul'),
+            'jenis'                => (string) $this->request->getPost('jenis'),
+            'total_pendapatan'     => (int) str_replace(['.', ','], '', (string) $this->request->getPost('total_pendapatan')),
+            'realisasi_pendapatan' => (int) str_replace(['.', ','], '', (string) $this->request->getPost('realisasi_pendapatan')),
+            'total_belanja'        => (int) str_replace(['.', ','], '', (string) $this->request->getPost('total_belanja')),
+            'realisasi_belanja'    => (int) str_replace(['.', ','], '', (string) $this->request->getPost('realisasi_belanja')),
+            'total_pembiayaan'     => (int) str_replace(['.', ','], '', (string) $this->request->getPost('total_pembiayaan')),
+            'realisasi_pembiayaan' => (int) str_replace(['.', ','], '', (string) $this->request->getPost('realisasi_pembiayaan')),
+            'status'               => (string) ($this->request->getPost('status') ?? 'final'),
+            'keterangan'           => (string) $this->request->getPost('keterangan'),
         ];
 
         $file = $this->request->getFile('file_pdf');
@@ -100,7 +137,7 @@ class ApbdesController extends BaseController
         }
 
         $apbdesModel->update($id, $data);
-        return redirect()->to('/admin/apbdes')->with('success', 'Data APBDes berhasil diperbarui!');
+        return redirect()->to(base_url('admin/apbdes'))->with('success', 'Data APBDes berhasil diperbarui!');
     }
 
     public function detail($id)
@@ -110,7 +147,7 @@ class ApbdesController extends BaseController
 
         $apbdes = $apbdesModel->find($id);
         if (!$apbdes) {
-            return redirect()->to('/admin/apbdes')->with('error', 'Data tidak ditemukan');
+            return redirect()->to(base_url('admin/apbdes'))->with('error', 'Data tidak ditemukan');
         }
 
         $rincian = $rincianModel->getByApbdes($id);
@@ -124,22 +161,34 @@ class ApbdesController extends BaseController
 
     public function storeRincian($apbdesId)
     {
+        $rules = [
+            'tipe'          => 'required|in_list[pendapatan,belanja,pembiayaan]',
+            'kode_rekening' => 'required|max_length[50]',
+            'uraian'        => 'required|max_length[255]',
+            'anggaran'      => 'required',
+            'realisasi'     => 'permit_empty',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $rincianModel = new ApbdesRincianModel();
-        $anggaran = (int) str_replace(['.', ','], '', $this->request->getPost('anggaran'));
-        $realisasi = (int) str_replace(['.', ','], '', $this->request->getPost('realisasi'));
+        $anggaran = (int) str_replace(['.', ','], '', (string) $this->request->getPost('anggaran'));
+        $realisasi = (int) str_replace(['.', ','], '', (string) $this->request->getPost('realisasi'));
         $persen = $anggaran > 0 ? round(($realisasi / $anggaran) * 100, 2) : 0;
 
         $rincianModel->insert([
             'apbdes_id'     => $apbdesId,
-            'tipe'          => $this->request->getPost('tipe'),
-            'kode_rekening' => $this->request->getPost('kode_rekening'),
-            'uraian'        => $this->request->getPost('uraian'),
+            'tipe'          => (string) $this->request->getPost('tipe'),
+            'kode_rekening' => (string) $this->request->getPost('kode_rekening'),
+            'uraian'        => (string) $this->request->getPost('uraian'),
             'anggaran'      => $anggaran,
             'realisasi'     => $realisasi,
             'persentase'    => $persen,
         ]);
 
-        return redirect()->to('/admin/apbdes/detail/' . $apbdesId)->with('success', 'Rincian berhasil ditambahkan!');
+        return redirect()->to(base_url('admin/apbdes/detail/' . $apbdesId))->with('success', 'Rincian berhasil ditambahkan!');
     }
 
     public function deleteRincian($id)

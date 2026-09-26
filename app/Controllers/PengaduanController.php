@@ -27,11 +27,13 @@ class PengaduanController extends BaseController
 
         $rules = [
             'nama_pelapor' => 'required|min_length[3]|max_length[150]',
+            'nik'          => 'permit_empty|numeric|exact_length[16]',
             'no_hp'        => 'required|min_length[8]|max_length[50]',
-            'dusun'        => 'required',
-            'kategori'     => 'required',
+            'dusun'        => 'required|max_length[100]',
+            'kategori'     => 'required|max_length[100]',
             'judul'        => 'required|min_length[5]|max_length[255]',
             'isi_aduan'    => 'required|min_length[10]',
+            'foto_bukti'   => 'permit_empty|max_size[foto_bukti,3072]|ext_in[foto_bukti,jpg,jpeg,png,webp]',
         ];
 
         if (!$this->validate($rules)) {
@@ -50,13 +52,13 @@ class PengaduanController extends BaseController
 
         $pengaduanModel->insert([
             'kode_tiket'   => $kodeTiket,
-            'nama_pelapor' => $this->request->getPost('nama_pelapor'),
-            'nik'          => $this->request->getPost('nik'),
-            'no_hp'        => $this->request->getPost('no_hp'),
-            'dusun'        => $this->request->getPost('dusun'),
-            'kategori'     => $this->request->getPost('kategori'),
-            'judul'        => $this->request->getPost('judul'),
-            'isi_aduan'    => $this->request->getPost('isi_aduan'),
+            'nama_pelapor' => strip_tags(trim((string) $this->request->getPost('nama_pelapor'))),
+            'nik'          => strip_tags(trim((string) $this->request->getPost('nik'))),
+            'no_hp'        => strip_tags(trim((string) $this->request->getPost('no_hp'))),
+            'dusun'        => strip_tags(trim((string) $this->request->getPost('dusun'))),
+            'kategori'     => strip_tags(trim((string) $this->request->getPost('kategori'))),
+            'judul'        => strip_tags(trim((string) $this->request->getPost('judul'))),
+            'isi_aduan'    => strip_tags(trim((string) $this->request->getPost('isi_aduan'))),
             'foto_bukti'   => $fotoName,
             'status'       => 'diajukan',
         ]);

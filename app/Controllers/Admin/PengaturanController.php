@@ -26,15 +26,25 @@ class PengaturanController extends BaseController
 
     public function update()
     {
+        $rules = [
+            'settings' => 'required',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $settings = $this->request->getPost('settings');
 
         if (is_array($settings)) {
             foreach ($settings as $key => $val) {
-                $existing = $this->pengaturanModel->where('key_name', $key)->first();
+                $cleanKey = strip_tags(trim((string) $key));
+                $cleanVal = strip_tags(trim((string) $val));
+                $existing = $this->pengaturanModel->where('key_name', $cleanKey)->first();
                 if ($existing) {
-                    $this->pengaturanModel->update($existing['id'], ['val' => (string) $val]);
+                    $this->pengaturanModel->update($existing['id'], ['val' => $cleanVal]);
                 } else {
-                    $this->pengaturanModel->insert(['key_name' => $key, 'val' => (string) $val]);
+                    $this->pengaturanModel->insert(['key_name' => $cleanKey, 'val' => $cleanVal]);
                 }
             }
         }

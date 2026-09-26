@@ -28,25 +28,42 @@ class AgendaController extends BaseController
 
     public function store()
     {
+        $rules = [
+            'judul'           => 'required|min_length[3]|max_length[255]',
+            'kategori'        => 'required|max_length[100]',
+            'tanggal_mulai'   => 'required|valid_date[Y-m-d]',
+            'tanggal_selesai' => 'permit_empty|valid_date[Y-m-d]',
+            'jam_mulai'       => 'permit_empty|max_length[20]',
+            'jam_selesai'     => 'permit_empty|max_length[20]',
+            'lokasi'          => 'required|max_length[255]',
+            'penyelenggara'   => 'permit_empty|max_length[150]',
+            'deskripsi'       => 'permit_empty',
+            'status'          => 'required|in_list[akan_datang,berlangsung,selesai]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $agendaModel = new AgendaModel();
-        $judul = $this->request->getPost('judul');
+        $judul = (string) $this->request->getPost('judul');
         $slug = url_title($judul, '-', true) . '-' . time();
 
         $agendaModel->insert([
             'judul'           => $judul,
             'slug'            => $slug,
-            'kategori'        => $this->request->getPost('kategori'),
-            'tanggal_mulai'   => $this->request->getPost('tanggal_mulai'),
+            'kategori'        => (string) $this->request->getPost('kategori'),
+            'tanggal_mulai'   => (string) $this->request->getPost('tanggal_mulai'),
             'tanggal_selesai' => $this->request->getPost('tanggal_selesai') ?: null,
-            'jam_mulai'       => $this->request->getPost('jam_mulai'),
-            'jam_selesai'     => $this->request->getPost('jam_selesai'),
-            'lokasi'          => $this->request->getPost('lokasi'),
-            'penyelenggara'   => $this->request->getPost('penyelenggara'),
-            'deskripsi'       => $this->request->getPost('deskripsi'),
-            'status'          => $this->request->getPost('status'),
+            'jam_mulai'       => (string) $this->request->getPost('jam_mulai'),
+            'jam_selesai'     => (string) $this->request->getPost('jam_selesai'),
+            'lokasi'          => (string) $this->request->getPost('lokasi'),
+            'penyelenggara'   => (string) $this->request->getPost('penyelenggara'),
+            'deskripsi'       => (string) $this->request->getPost('deskripsi'),
+            'status'          => (string) $this->request->getPost('status'),
         ]);
 
-        return redirect()->to('/admin/agenda')->with('success', 'Agenda berhasil ditambahkan!');
+        return redirect()->to(base_url('admin/agenda'))->with('success', 'Agenda berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -54,7 +71,7 @@ class AgendaController extends BaseController
         $agendaModel = new AgendaModel();
         $item = $agendaModel->find($id);
         if (!$item) {
-            return redirect()->to('/admin/agenda')->with('error', 'Data tidak ditemukan');
+            return redirect()->to(base_url('admin/agenda'))->with('error', 'Data tidak ditemukan');
         }
 
         return view('admin/agenda/form', [
@@ -65,22 +82,39 @@ class AgendaController extends BaseController
 
     public function update($id)
     {
+        $rules = [
+            'judul'           => 'required|min_length[3]|max_length[255]',
+            'kategori'        => 'required|max_length[100]',
+            'tanggal_mulai'   => 'required|valid_date[Y-m-d]',
+            'tanggal_selesai' => 'permit_empty|valid_date[Y-m-d]',
+            'jam_mulai'       => 'permit_empty|max_length[20]',
+            'jam_selesai'     => 'permit_empty|max_length[20]',
+            'lokasi'          => 'required|max_length[255]',
+            'penyelenggara'   => 'permit_empty|max_length[150]',
+            'deskripsi'       => 'permit_empty',
+            'status'          => 'required|in_list[akan_datang,berlangsung,selesai]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $agendaModel = new AgendaModel();
         $data = [
-            'judul'           => $this->request->getPost('judul'),
-            'kategori'        => $this->request->getPost('kategori'),
-            'tanggal_mulai'   => $this->request->getPost('tanggal_mulai'),
+            'judul'           => (string) $this->request->getPost('judul'),
+            'kategori'        => (string) $this->request->getPost('kategori'),
+            'tanggal_mulai'   => (string) $this->request->getPost('tanggal_mulai'),
             'tanggal_selesai' => $this->request->getPost('tanggal_selesai') ?: null,
-            'jam_mulai'       => $this->request->getPost('jam_mulai'),
-            'jam_selesai'     => $this->request->getPost('jam_selesai'),
-            'lokasi'          => $this->request->getPost('lokasi'),
-            'penyelenggara'   => $this->request->getPost('penyelenggara'),
-            'deskripsi'       => $this->request->getPost('deskripsi'),
-            'status'          => $this->request->getPost('status'),
+            'jam_mulai'       => (string) $this->request->getPost('jam_mulai'),
+            'jam_selesai'     => (string) $this->request->getPost('jam_selesai'),
+            'lokasi'          => (string) $this->request->getPost('lokasi'),
+            'penyelenggara'   => (string) $this->request->getPost('penyelenggara'),
+            'deskripsi'       => (string) $this->request->getPost('deskripsi'),
+            'status'          => (string) $this->request->getPost('status'),
         ];
 
         $agendaModel->update($id, $data);
-        return redirect()->to('/admin/agenda')->with('success', 'Agenda berhasil diperbarui!');
+        return redirect()->to(base_url('admin/agenda'))->with('success', 'Agenda berhasil diperbarui!');
     }
 
     public function delete($id)

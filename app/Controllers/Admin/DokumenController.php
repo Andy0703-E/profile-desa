@@ -28,6 +28,19 @@ class DokumenController extends BaseController
 
     public function store()
     {
+        $rules = [
+            'judul'         => 'required|min_length[3]|max_length[255]',
+            'nomor_dokumen' => 'permit_empty|max_length[100]',
+            'kategori'      => 'required|max_length[100]',
+            'tahun'         => 'required|numeric|exact_length[4]',
+            'deskripsi'     => 'permit_empty',
+            'file_dokumen'  => 'permit_empty|max_size[file_dokumen,10240]|ext_in[file_dokumen,pdf,doc,docx,xls,xlsx]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $dokumenModel = new DokumenPublikModel();
 
         $filePath = null;
@@ -44,17 +57,17 @@ class DokumenController extends BaseController
         }
 
         $dokumenModel->insert([
-            'judul'          => $this->request->getPost('judul'),
-            'nomor_dokumen'  => $this->request->getPost('nomor_dokumen'),
-            'kategori'       => $this->request->getPost('kategori'),
-            'tahun'          => $this->request->getPost('tahun'),
-            'deskripsi'      => $this->request->getPost('deskripsi'),
+            'judul'          => (string) $this->request->getPost('judul'),
+            'nomor_dokumen'  => (string) $this->request->getPost('nomor_dokumen'),
+            'kategori'       => (string) $this->request->getPost('kategori'),
+            'tahun'          => (string) $this->request->getPost('tahun'),
+            'deskripsi'      => (string) $this->request->getPost('deskripsi'),
             'file_url'       => $filePath ?? 'uploads/dokumen/dummy.pdf',
             'ukuran_file'    => $fileSize ?? '1.2 MB',
             'total_download' => 0,
         ]);
 
-        return redirect()->to('/admin/dokumen')->with('success', 'Dokumen berhasil dipublikasikan!');
+        return redirect()->to(base_url('admin/dokumen'))->with('success', 'Dokumen berhasil dipublikasikan!');
     }
 
     public function edit($id)
@@ -62,7 +75,7 @@ class DokumenController extends BaseController
         $dokumenModel = new DokumenPublikModel();
         $item = $dokumenModel->find($id);
         if (!$item) {
-            return redirect()->to('/admin/dokumen')->with('error', 'Data tidak ditemukan');
+            return redirect()->to(base_url('admin/dokumen'))->with('error', 'Data tidak ditemukan');
         }
 
         return view('admin/dokumen/form', [
@@ -73,13 +86,26 @@ class DokumenController extends BaseController
 
     public function update($id)
     {
+        $rules = [
+            'judul'         => 'required|min_length[3]|max_length[255]',
+            'nomor_dokumen' => 'permit_empty|max_length[100]',
+            'kategori'      => 'required|max_length[100]',
+            'tahun'         => 'required|numeric|exact_length[4]',
+            'deskripsi'     => 'permit_empty',
+            'file_dokumen'  => 'permit_empty|max_size[file_dokumen,10240]|ext_in[file_dokumen,pdf,doc,docx,xls,xlsx]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $dokumenModel = new DokumenPublikModel();
         $data = [
-            'judul'         => $this->request->getPost('judul'),
-            'nomor_dokumen' => $this->request->getPost('nomor_dokumen'),
-            'kategori'      => $this->request->getPost('kategori'),
-            'tahun'         => $this->request->getPost('tahun'),
-            'deskripsi'     => $this->request->getPost('deskripsi'),
+            'judul'         => (string) $this->request->getPost('judul'),
+            'nomor_dokumen' => (string) $this->request->getPost('nomor_dokumen'),
+            'kategori'      => (string) $this->request->getPost('kategori'),
+            'tahun'         => (string) $this->request->getPost('tahun'),
+            'deskripsi'     => (string) $this->request->getPost('deskripsi'),
         ];
 
         $file = $this->request->getFile('file_dokumen');
@@ -95,7 +121,7 @@ class DokumenController extends BaseController
         }
 
         $dokumenModel->update($id, $data);
-        return redirect()->to('/admin/dokumen')->with('success', 'Dokumen berhasil diperbarui!');
+        return redirect()->to(base_url('admin/dokumen'))->with('success', 'Dokumen berhasil diperbarui!');
     }
 
     public function delete($id)

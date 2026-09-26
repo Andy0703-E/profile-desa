@@ -28,6 +28,29 @@ class PembangunanController extends BaseController
 
     public function store()
     {
+        $rules = [
+            'nama_kegiatan' => 'required|min_length[3]|max_length[255]',
+            'bidang'        => 'required|max_length[150]',
+            'lokasi'        => 'permit_empty|max_length[255]',
+            'dusun'         => 'permit_empty|max_length[100]',
+            'anggaran'      => 'required',
+            'sumber_dana'   => 'permit_empty|max_length[100]',
+            'tahun'         => 'required|numeric|exact_length[4]',
+            'status'        => 'required|in_list[rencana,berjalan,selesai]',
+            'progres'       => 'permit_empty|numeric|greater_than_equal_to[0]|less_than_equal_to[100]',
+            'lat'           => 'permit_empty|max_length[50]',
+            'lng'           => 'permit_empty|max_length[50]',
+            'pelaksana'     => 'permit_empty|max_length[150]',
+            'volume'        => 'permit_empty|max_length[100]',
+            'manfaat'       => 'permit_empty',
+            'foto_sebelum'  => 'permit_empty|max_size[foto_sebelum,2048]|ext_in[foto_sebelum,jpg,jpeg,png,webp]',
+            'foto_sesudah'  => 'permit_empty|max_size[foto_sesudah,2048]|ext_in[foto_sesudah,jpg,jpeg,png,webp]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $pembangunanModel = new PembangunanModel();
 
         $fotoSebelum = null;
@@ -46,30 +69,30 @@ class PembangunanController extends BaseController
             $fotoSesudah = 'uploads/desa/' . $n2;
         }
 
-        $nama = $this->request->getPost('nama_kegiatan');
+        $nama = (string) $this->request->getPost('nama_kegiatan');
         $slug = url_title($nama, '-', true) . '-' . time();
 
         $pembangunanModel->insert([
             'nama_kegiatan' => $nama,
             'slug'          => $slug,
-            'bidang'        => $this->request->getPost('bidang'),
-            'lokasi'        => $this->request->getPost('lokasi'),
-            'dusun'         => $this->request->getPost('dusun'),
-            'anggaran'      => (int) str_replace(['.', ','], '', $this->request->getPost('anggaran')),
-            'sumber_dana'   => $this->request->getPost('sumber_dana'),
-            'tahun'         => $this->request->getPost('tahun'),
-            'status'        => $this->request->getPost('status'),
-            'progres'       => (int) $this->request->getPost('progres'),
+            'bidang'        => (string) $this->request->getPost('bidang'),
+            'lokasi'        => (string) $this->request->getPost('lokasi'),
+            'dusun'         => (string) $this->request->getPost('dusun'),
+            'anggaran'      => (int) str_replace(['.', ','], '', (string) $this->request->getPost('anggaran')),
+            'sumber_dana'   => (string) $this->request->getPost('sumber_dana'),
+            'tahun'         => (string) $this->request->getPost('tahun'),
+            'status'        => (string) $this->request->getPost('status'),
+            'progres'       => (int) ($this->request->getPost('progres') ?? 0),
             'foto_sebelum'  => $fotoSebelum,
             'foto_sesudah'  => $fotoSesudah,
-            'lat'           => $this->request->getPost('lat'),
-            'lng'           => $this->request->getPost('lng'),
-            'pelaksana'     => $this->request->getPost('pelaksana'),
-            'volume'        => $this->request->getPost('volume'),
-            'manfaat'       => $this->request->getPost('manfaat'),
+            'lat'           => (string) $this->request->getPost('lat'),
+            'lng'           => (string) $this->request->getPost('lng'),
+            'pelaksana'     => (string) $this->request->getPost('pelaksana'),
+            'volume'        => (string) $this->request->getPost('volume'),
+            'manfaat'       => (string) $this->request->getPost('manfaat'),
         ]);
 
-        return redirect()->to('/admin/pembangunan')->with('success', 'Kegiatan pembangunan berhasil ditambahkan!');
+        return redirect()->to(base_url('admin/pembangunan'))->with('success', 'Kegiatan pembangunan berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -77,7 +100,7 @@ class PembangunanController extends BaseController
         $pembangunanModel = new PembangunanModel();
         $item = $pembangunanModel->find($id);
         if (!$item) {
-            return redirect()->to('/admin/pembangunan')->with('error', 'Data tidak ditemukan');
+            return redirect()->to(base_url('admin/pembangunan'))->with('error', 'Data tidak ditemukan');
         }
 
         return view('admin/pembangunan/form', [
@@ -88,23 +111,46 @@ class PembangunanController extends BaseController
 
     public function update($id)
     {
+        $rules = [
+            'nama_kegiatan' => 'required|min_length[3]|max_length[255]',
+            'bidang'        => 'required|max_length[150]',
+            'lokasi'        => 'permit_empty|max_length[255]',
+            'dusun'         => 'permit_empty|max_length[100]',
+            'anggaran'      => 'required',
+            'sumber_dana'   => 'permit_empty|max_length[100]',
+            'tahun'         => 'required|numeric|exact_length[4]',
+            'status'        => 'required|in_list[rencana,berjalan,selesai]',
+            'progres'       => 'permit_empty|numeric|greater_than_equal_to[0]|less_than_equal_to[100]',
+            'lat'           => 'permit_empty|max_length[50]',
+            'lng'           => 'permit_empty|max_length[50]',
+            'pelaksana'     => 'permit_empty|max_length[150]',
+            'volume'        => 'permit_empty|max_length[100]',
+            'manfaat'       => 'permit_empty',
+            'foto_sebelum'  => 'permit_empty|max_size[foto_sebelum,2048]|ext_in[foto_sebelum,jpg,jpeg,png,webp]',
+            'foto_sesudah'  => 'permit_empty|max_size[foto_sesudah,2048]|ext_in[foto_sesudah,jpg,jpeg,png,webp]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $pembangunanModel = new PembangunanModel();
 
         $data = [
-            'nama_kegiatan' => $this->request->getPost('nama_kegiatan'),
-            'bidang'        => $this->request->getPost('bidang'),
-            'lokasi'        => $this->request->getPost('lokasi'),
-            'dusun'         => $this->request->getPost('dusun'),
-            'anggaran'      => (int) str_replace(['.', ','], '', $this->request->getPost('anggaran')),
-            'sumber_dana'   => $this->request->getPost('sumber_dana'),
-            'tahun'         => $this->request->getPost('tahun'),
-            'status'        => $this->request->getPost('status'),
-            'progres'       => (int) $this->request->getPost('progres'),
-            'lat'           => $this->request->getPost('lat'),
-            'lng'           => $this->request->getPost('lng'),
-            'pelaksana'     => $this->request->getPost('pelaksana'),
-            'volume'        => $this->request->getPost('volume'),
-            'manfaat'       => $this->request->getPost('manfaat'),
+            'nama_kegiatan' => (string) $this->request->getPost('nama_kegiatan'),
+            'bidang'        => (string) $this->request->getPost('bidang'),
+            'lokasi'        => (string) $this->request->getPost('lokasi'),
+            'dusun'         => (string) $this->request->getPost('dusun'),
+            'anggaran'      => (int) str_replace(['.', ','], '', (string) $this->request->getPost('anggaran')),
+            'sumber_dana'   => (string) $this->request->getPost('sumber_dana'),
+            'tahun'         => (string) $this->request->getPost('tahun'),
+            'status'        => (string) $this->request->getPost('status'),
+            'progres'       => (int) ($this->request->getPost('progres') ?? 0),
+            'lat'           => (string) $this->request->getPost('lat'),
+            'lng'           => (string) $this->request->getPost('lng'),
+            'pelaksana'     => (string) $this->request->getPost('pelaksana'),
+            'volume'        => (string) $this->request->getPost('volume'),
+            'manfaat'       => (string) $this->request->getPost('manfaat'),
         ];
 
         $file1 = $this->request->getFile('foto_sebelum');
@@ -122,7 +168,7 @@ class PembangunanController extends BaseController
         }
 
         $pembangunanModel->update($id, $data);
-        return redirect()->to('/admin/pembangunan')->with('success', 'Kegiatan pembangunan berhasil diperbarui!');
+        return redirect()->to(base_url('admin/pembangunan'))->with('success', 'Kegiatan pembangunan berhasil diperbarui!');
     }
 
     public function delete($id)

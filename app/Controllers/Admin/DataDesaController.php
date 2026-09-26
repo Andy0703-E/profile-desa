@@ -60,10 +60,18 @@ class DataDesaController extends BaseController
 
     public function updateStatistik()
     {
+        $rules = [
+            'stats' => 'required',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $stats = $this->request->getPost('stats');
         if (is_array($stats)) {
             foreach ($stats as $id => $val) {
-                $this->statistikModel->update((int) $id, ['value' => (string) $val]);
+                $this->statistikModel->update((int) $id, ['value' => (string) strip_tags(trim($val))]);
             }
         }
 

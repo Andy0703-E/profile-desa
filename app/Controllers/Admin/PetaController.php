@@ -28,6 +28,21 @@ class PetaController extends BaseController
 
     public function store()
     {
+        $rules = [
+            'nama'      => 'required|min_length[3]|max_length[150]',
+            'kategori'  => 'required|max_length[100]',
+            'lat'       => 'required|max_length[50]',
+            'lng'       => 'required|max_length[50]',
+            'alamat'    => 'permit_empty|max_length[255]',
+            'deskripsi' => 'permit_empty',
+            'kontak'    => 'permit_empty|max_length[100]',
+            'foto'      => 'permit_empty|max_size[foto,2048]|ext_in[foto,jpg,jpeg,png,webp]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $petaModel = new PetaTitikModel();
 
         $foto = $this->request->getFile('foto');
@@ -39,17 +54,17 @@ class PetaController extends BaseController
         }
 
         $petaModel->insert([
-            'nama'      => $this->request->getPost('nama'),
-            'kategori'  => $this->request->getPost('kategori'),
-            'lat'       => $this->request->getPost('lat'),
-            'lng'       => $this->request->getPost('lng'),
-            'alamat'    => $this->request->getPost('alamat'),
-            'deskripsi' => $this->request->getPost('deskripsi'),
-            'kontak'    => $this->request->getPost('kontak'),
+            'nama'      => (string) $this->request->getPost('nama'),
+            'kategori'  => (string) $this->request->getPost('kategori'),
+            'lat'       => (string) $this->request->getPost('lat'),
+            'lng'       => (string) $this->request->getPost('lng'),
+            'alamat'    => (string) $this->request->getPost('alamat'),
+            'deskripsi' => (string) $this->request->getPost('deskripsi'),
+            'kontak'    => (string) $this->request->getPost('kontak'),
             'foto'      => $fotoPath,
         ]);
 
-        return redirect()->to('/admin/peta')->with('success', 'Titik lokasi berhasil ditambahkan!');
+        return redirect()->to(base_url('admin/peta'))->with('success', 'Titik lokasi berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -57,7 +72,7 @@ class PetaController extends BaseController
         $petaModel = new PetaTitikModel();
         $item = $petaModel->find($id);
         if (!$item) {
-            return redirect()->to('/admin/peta')->with('error', 'Data tidak ditemukan');
+            return redirect()->to(base_url('admin/peta'))->with('error', 'Data tidak ditemukan');
         }
 
         return view('admin/peta/form', [
@@ -68,15 +83,30 @@ class PetaController extends BaseController
 
     public function update($id)
     {
+        $rules = [
+            'nama'      => 'required|min_length[3]|max_length[150]',
+            'kategori'  => 'required|max_length[100]',
+            'lat'       => 'required|max_length[50]',
+            'lng'       => 'required|max_length[50]',
+            'alamat'    => 'permit_empty|max_length[255]',
+            'deskripsi' => 'permit_empty',
+            'kontak'    => 'permit_empty|max_length[100]',
+            'foto'      => 'permit_empty|max_size[foto,2048]|ext_in[foto,jpg,jpeg,png,webp]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $petaModel = new PetaTitikModel();
         $data = [
-            'nama'      => $this->request->getPost('nama'),
-            'kategori'  => $this->request->getPost('kategori'),
-            'lat'       => $this->request->getPost('lat'),
-            'lng'       => $this->request->getPost('lng'),
-            'alamat'    => $this->request->getPost('alamat'),
-            'deskripsi' => $this->request->getPost('deskripsi'),
-            'kontak'    => $this->request->getPost('kontak'),
+            'nama'      => (string) $this->request->getPost('nama'),
+            'kategori'  => (string) $this->request->getPost('kategori'),
+            'lat'       => (string) $this->request->getPost('lat'),
+            'lng'       => (string) $this->request->getPost('lng'),
+            'alamat'    => (string) $this->request->getPost('alamat'),
+            'deskripsi' => (string) $this->request->getPost('deskripsi'),
+            'kontak'    => (string) $this->request->getPost('kontak'),
         ];
 
         $foto = $this->request->getFile('foto');
@@ -87,7 +117,7 @@ class PetaController extends BaseController
         }
 
         $petaModel->update($id, $data);
-        return redirect()->to('/admin/peta')->with('success', 'Titik lokasi berhasil diperbarui!');
+        return redirect()->to(base_url('admin/peta'))->with('success', 'Titik lokasi berhasil diperbarui!');
     }
 
     public function delete($id)

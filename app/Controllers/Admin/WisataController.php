@@ -28,6 +28,27 @@ class WisataController extends BaseController
 
     public function store()
     {
+        $rules = [
+            'nama'             => 'required|min_length[3]|max_length[200]',
+            'kategori'         => 'required|max_length[100]',
+            'deskripsi'        => 'required',
+            'daya_tarik'       => 'permit_empty',
+            'harga_tiket'      => 'permit_empty|max_length[100]',
+            'jam_buka'         => 'permit_empty|max_length[100]',
+            'fasilitas'        => 'permit_empty',
+            'kontak_pengelola' => 'permit_empty|max_length[150]',
+            'lokasi'           => 'permit_empty|max_length[255]',
+            'lat'              => 'permit_empty|max_length[50]',
+            'lng'              => 'permit_empty|max_length[50]',
+            'maps_url'         => 'permit_empty|max_length[500]',
+            'status'           => 'permit_empty|in_list[aktif,tidak_aktif]',
+            'foto'             => 'permit_empty|max_size[foto,2048]|ext_in[foto,jpg,jpeg,png,webp]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $wisataModel = new WisataModel();
 
         $foto = $this->request->getFile('foto');
@@ -38,28 +59,28 @@ class WisataController extends BaseController
             $fotoPath = 'uploads/desa/' . $newName;
         }
 
-        $nama = $this->request->getPost('nama');
+        $nama = (string) $this->request->getPost('nama');
         $slug = url_title($nama, '-', true) . '-' . time();
 
         $wisataModel->insert([
             'nama'             => $nama,
             'slug'             => $slug,
-            'kategori'         => $this->request->getPost('kategori'),
-            'deskripsi'        => $this->request->getPost('deskripsi'),
-            'daya_tarik'       => $this->request->getPost('daya_tarik'),
-            'harga_tiket'      => $this->request->getPost('harga_tiket'),
-            'jam_buka'         => $this->request->getPost('jam_buka'),
-            'fasilitas'        => $this->request->getPost('fasilitas'),
-            'kontak_pengelola' => $this->request->getPost('kontak_pengelola'),
-            'lokasi'           => $this->request->getPost('lokasi'),
-            'lat'              => $this->request->getPost('lat'),
-            'lng'              => $this->request->getPost('lng'),
-            'maps_url'         => $this->request->getPost('maps_url'),
+            'kategori'         => (string) $this->request->getPost('kategori'),
+            'deskripsi'        => (string) $this->request->getPost('deskripsi'),
+            'daya_tarik'       => (string) $this->request->getPost('daya_tarik'),
+            'harga_tiket'      => (string) $this->request->getPost('harga_tiket'),
+            'jam_buka'         => (string) $this->request->getPost('jam_buka'),
+            'fasilitas'        => (string) $this->request->getPost('fasilitas'),
+            'kontak_pengelola' => (string) $this->request->getPost('kontak_pengelola'),
+            'lokasi'           => (string) $this->request->getPost('lokasi'),
+            'lat'              => (string) $this->request->getPost('lat'),
+            'lng'              => (string) $this->request->getPost('lng'),
+            'maps_url'         => (string) $this->request->getPost('maps_url'),
             'foto'             => $fotoPath,
-            'status'           => $this->request->getPost('status') ?? 'aktif',
+            'status'           => (string) ($this->request->getPost('status') ?? 'aktif'),
         ]);
 
-        return redirect()->to('/admin/wisata')->with('success', 'Destinasi wisata berhasil ditambahkan!');
+        return redirect()->to(base_url('admin/wisata'))->with('success', 'Destinasi wisata berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -67,7 +88,7 @@ class WisataController extends BaseController
         $wisataModel = new WisataModel();
         $item = $wisataModel->find($id);
         if (!$item) {
-            return redirect()->to('/admin/wisata')->with('error', 'Data tidak ditemukan');
+            return redirect()->to(base_url('admin/wisata'))->with('error', 'Data tidak ditemukan');
         }
 
         return view('admin/wisata/form', [
@@ -78,21 +99,42 @@ class WisataController extends BaseController
 
     public function update($id)
     {
+        $rules = [
+            'nama'             => 'required|min_length[3]|max_length[200]',
+            'kategori'         => 'required|max_length[100]',
+            'deskripsi'        => 'required',
+            'daya_tarik'       => 'permit_empty',
+            'harga_tiket'      => 'permit_empty|max_length[100]',
+            'jam_buka'         => 'permit_empty|max_length[100]',
+            'fasilitas'        => 'permit_empty',
+            'kontak_pengelola' => 'permit_empty|max_length[150]',
+            'lokasi'           => 'permit_empty|max_length[255]',
+            'lat'              => 'permit_empty|max_length[50]',
+            'lng'              => 'permit_empty|max_length[50]',
+            'maps_url'         => 'permit_empty|max_length[500]',
+            'status'           => 'permit_empty|in_list[aktif,tidak_aktif]',
+            'foto'             => 'permit_empty|max_size[foto,2048]|ext_in[foto,jpg,jpeg,png,webp]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $wisataModel = new WisataModel();
         $data = [
-            'nama'             => $this->request->getPost('nama'),
-            'kategori'         => $this->request->getPost('kategori'),
-            'deskripsi'        => $this->request->getPost('deskripsi'),
-            'daya_tarik'       => $this->request->getPost('daya_tarik'),
-            'harga_tiket'      => $this->request->getPost('harga_tiket'),
-            'jam_buka'         => $this->request->getPost('jam_buka'),
-            'fasilitas'        => $this->request->getPost('fasilitas'),
-            'kontak_pengelola' => $this->request->getPost('kontak_pengelola'),
-            'lokasi'           => $this->request->getPost('lokasi'),
-            'lat'              => $this->request->getPost('lat'),
-            'lng'              => $this->request->getPost('lng'),
-            'maps_url'         => $this->request->getPost('maps_url'),
-            'status'           => $this->request->getPost('status') ?? 'aktif',
+            'nama'             => (string) $this->request->getPost('nama'),
+            'kategori'         => (string) $this->request->getPost('kategori'),
+            'deskripsi'        => (string) $this->request->getPost('deskripsi'),
+            'daya_tarik'       => (string) $this->request->getPost('daya_tarik'),
+            'harga_tiket'      => (string) $this->request->getPost('harga_tiket'),
+            'jam_buka'         => (string) $this->request->getPost('jam_buka'),
+            'fasilitas'        => (string) $this->request->getPost('fasilitas'),
+            'kontak_pengelola' => (string) $this->request->getPost('kontak_pengelola'),
+            'lokasi'           => (string) $this->request->getPost('lokasi'),
+            'lat'              => (string) $this->request->getPost('lat'),
+            'lng'              => (string) $this->request->getPost('lng'),
+            'maps_url'         => (string) $this->request->getPost('maps_url'),
+            'status'           => (string) ($this->request->getPost('status') ?? 'aktif'),
         ];
 
         $foto = $this->request->getFile('foto');
@@ -103,7 +145,7 @@ class WisataController extends BaseController
         }
 
         $wisataModel->update($id, $data);
-        return redirect()->to('/admin/wisata')->with('success', 'Destinasi wisata berhasil diperbarui!');
+        return redirect()->to(base_url('admin/wisata'))->with('success', 'Destinasi wisata berhasil diperbarui!');
     }
 
     public function delete($id)
