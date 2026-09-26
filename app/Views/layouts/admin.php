@@ -56,23 +56,27 @@
         }
 
         .sidebar-brand {
-            padding: 1.5rem 1.25rem;
+            padding: 1.25rem 1.25rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.85rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            text-decoration: none;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
         }
 
         .brand-logo-small {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
             background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             flex-shrink: 0;
+            padding: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(255,255,255,0.2);
         }
 
         .brand-logo-small img {
@@ -81,16 +85,43 @@
             object-fit: contain;
         }
 
-        .brand-name {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #ffffff;
-            line-height: 1.2;
+        .brand-meta {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
         }
 
-        .brand-subname {
-            font-size: 0.7rem;
-            color: #64748b;
+        .brand-name {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #34d399;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.2rem;
+        }
+
+        .brand-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+            display: inline-block;
         }
 
         .sidebar-menu {
@@ -414,15 +445,15 @@
 <body>
     <!-- Sidebar -->
     <aside class="sidebar" id="adminSidebar">
-        <div class="sidebar-brand">
+        <a href="<?= base_url('admin') ?>" class="sidebar-brand">
             <div class="brand-logo-small">
-                <img src="<?= base_url('images/logo.webp') ?>" alt="Logo">
+                <img src="<?= base_url('images/logo.webp') ?>" alt="Logo Desa">
             </div>
-            <div>
-                <div class="brand-name">Desa Batu Bingkung</div>
-                <div class="brand-subname">Admin Control Panel</div>
+            <div class="brand-meta">
+                <div class="brand-name">Batu Bingkung</div>
+                <div class="brand-badge">Admin Workspace</div>
             </div>
-        </div>
+        </a>
 
         <ul class="sidebar-menu">
             <li class="menu-header">Menu Utama</li>
