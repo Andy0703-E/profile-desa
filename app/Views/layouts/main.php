@@ -377,8 +377,8 @@
 
         .footer-grid-desktop {
             display: grid;
-            grid-template-columns: 1.4fr 1.1fr 1fr 1.1fr;
-            gap: 2.5rem;
+            grid-template-columns: 1.5fr 1.2fr 1.3fr;
+            gap: 3rem;
         }
 
         .footer-logo-brand {
@@ -874,40 +874,34 @@
                         </div>
                     </div>
 
-                    <!-- Column 2: Hubungi Kami -->
+                    <!-- Column 2: Hubungi Kami & Pelayanan -->
                     <div>
                         <h4 class="footer-col-title">Hubungi Kami</h4>
                         <div class="footer-info-text">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <i data-lucide="phone" style="width: 16px; height: 16px; color: #34d399;"></i>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem;">
+                                <i data-lucide="phone" style="width: 16px; height: 16px; color: #34d399; flex-shrink: 0;"></i>
                                 <span><?= esc($desa['telepon'] ?? '082194882000') ?></span>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <i data-lucide="mail" style="width: 16px; height: 16px; color: #34d399;"></i>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem;">
+                                <i data-lucide="mail" style="width: 16px; height: 16px; color: #34d399; flex-shrink: 0;"></i>
                                 <span><?= esc($desa['email'] ?? 'kantor@batubingkung.desa.id') ?></span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i data-lucide="clock" style="width: 16px; height: 16px; color: #34d399; flex-shrink: 0;"></i>
+                                <span>Senin - Jumat: 08.00 - 15.00 WITA</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Column 3: Nomor Telepon Penting -->
-                    <div>
-                        <h4 class="footer-col-title">Nomor Telepon Penting</h4>
-                        <div class="footer-info-text">
-                            <div>Polsek Pasimarannu: (0414) 21110</div>
-                            <div style="margin-top: 0.4rem;">Puskesmas Pasimarannu: (0414) 21118</div>
-                            <div style="margin-top: 0.4rem;">Damkar Kepulauan Selayar: 113</div>
-                        </div>
-                    </div>
-
-                    <!-- Column 4: Jelajahi -->
+                    <!-- Column 3: Tautan Cepat -->
                     <div>
                         <h4 class="footer-col-title">Tautan Cepat</h4>
                         <ul class="footer-link-list">
                             <li><a href="<?= base_url('transparansi') ?>">Transparansi APBDes</a></li>
                             <li><a href="<?= base_url('peta') ?>">Peta Geospasial Wilayah</a></li>
                             <li><a href="<?= base_url('pembangunan') ?>">Informasi Pembangunan</a></li>
-                            <li><a href="<?= base_url('potensi') ?>">Lapak UMKM & Wisata</a></li>
-                            <li><a href="<?= base_url('agenda') ?>">Agenda & Kegiatan Desa</a></li>
+                            <li><a href="<?= base_url('potensi') ?>">Lapak UMKM &amp; Wisata</a></li>
+                            <li><a href="<?= base_url('agenda') ?>">Agenda &amp; Kegiatan Desa</a></li>
                             <li><a href="<?= base_url('pengaduan') ?>">Pengaduan Masyarakat</a></li>
                         </ul>
                     </div>
@@ -940,29 +934,17 @@
                         <button type="button" class="accordion-btn">
                             <span style="display: flex; align-items: center; gap: 0.5rem;">
                                 <i data-lucide="phone" style="width: 17px; height: 17px; color: #34d399;"></i>
-                                <span>Kontak Desa</span>
+                                <span>Kontak &amp; Pelayanan</span>
                             </span>
                             <i data-lucide="chevron-down" class="arrow" style="width: 16px; height: 16px;"></i>
                         </button>
                         <div class="accordion-content">
                             Telepon: <?= esc($desa['telepon'] ?? '082194882000') ?><br>
-                            Email: <?= esc($desa['email'] ?? 'kantor@batubingkung.desa.id') ?>
+                            Email: <?= esc($desa['email'] ?? 'kantor@batubingkung.desa.id') ?><br>
+                            Jam Kantor: Senin - Jumat 08.00 - 15.00 WITA
                         </div>
 
-                        <!-- Accordion 3: Nomor Telepon Penting -->
-                        <button type="button" class="accordion-btn">
-                            <span style="display: flex; align-items: center; gap: 0.5rem;">
-                                <i data-lucide="shield-alert" style="width: 17px; height: 17px; color: #34d399;"></i>
-                                <span>Nomor Telepon Penting</span>
-                            </span>
-                            <i data-lucide="chevron-down" class="arrow" style="width: 16px; height: 16px;"></i>
-                        </button>
-                        <div class="accordion-content">
-                            Polsek Pasimarannu: (0414) 21110<br>
-                            Puskesmas Pasimarannu: (0414) 21118
-                        </div>
-
-                        <!-- Accordion 4: Sosial Media -->
+                        <!-- Accordion 3: Sosial Media -->
                         <button type="button" class="accordion-btn">
                             <span style="display: flex; align-items: center; gap: 0.5rem;">
                                 <i data-lucide="share-2" style="width: 17px; height: 17px; color: #34d399;"></i>
@@ -971,10 +953,10 @@
                             <i data-lucide="chevron-down" class="arrow" style="width: 16px; height: 16px;"></i>
                         </button>
                         <div class="accordion-content">
-                            Facebook & Instagram Pemerintah <?= esc($desa['nama_desa'] ?? 'Desa Batu Bingkung') ?>
+                            Facebook &amp; Instagram Pemerintah <?= esc($desa['nama_desa'] ?? 'Desa Batu Bingkung') ?>
                         </div>
 
-                        <!-- Accordion 5: Jelajahi -->
+                        <!-- Accordion 4: Jelajahi -->
                         <button type="button" class="accordion-btn">
                             <span style="display: flex; align-items: center; gap: 0.5rem;">
                                 <i data-lucide="link" style="width: 17px; height: 17px; color: #34d399;"></i>
