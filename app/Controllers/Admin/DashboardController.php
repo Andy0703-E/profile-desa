@@ -4,12 +4,14 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\BeritaModel;
-use App\Models\PengajuanModel;
 use App\Models\PengaduanModel;
 use App\Models\UmkmModel;
 use App\Models\WisataModel;
 use App\Models\AgendaModel;
 use App\Models\PembangunanModel;
+use App\Models\PetaTitikModel;
+use App\Models\PemerintahanModel;
+use App\Models\ApbdesModel;
 
 class DashboardController extends BaseController
 {
@@ -21,28 +23,38 @@ class DashboardController extends BaseController
         $wisataModel = new WisataModel();
         $agendaModel = new AgendaModel();
         $pembangunanModel = new PembangunanModel();
+        $petaModel = new PetaTitikModel();
+        $aparaturModel = new PemerintahanModel();
+        $apbdesModel = new ApbdesModel();
 
-        // Optional check if PengajuanModel exists (handle older DB structure)
-        $countPengajuan = 0;
-        $latestPengajuan = [];
-        if (class_exists('App\Models\PengajuanModel')) {
-            $pengajuanModel = new PengajuanModel();
-            $countPengajuan = $pengajuanModel->countAll();
-            // $latestPengajuan = $pengajuanModel->orderBy('id', 'DESC')->limit(5)->findAll();
-        }
+        // APBDes summary
+        $latestApbdes = $apbdesModel->orderBy('tahun', 'DESC')->first();
+
+        // Pengaduan status count
+        $countPendingAduan = $pengaduanModel->where('status', 'diajukan')->countAllResults();
+        $countProsesAduan  = $pengaduanModel->where('status', 'diproses')->countAllResults();
+        $countSelesaiAduan = $pengaduanModel->where('status', 'selesai')->countAllResults();
 
         $data = [
             'title'             => 'Dashboard Administrator',
             'countBerita'       => $beritaModel->countAll(),
             'countPengaduan'    => $pengaduanModel->countAll(),
+            'countPendingAduan' => $countPendingAduan,
+            'countProsesAduan'  => $countProsesAduan,
+            'countSelesaiAduan' => $countSelesaiAduan,
             'countUmkm'         => $umkmModel->countAll(),
             'countWisata'       => $wisataModel->countAll(),
             'countAgenda'       => $agendaModel->countAll(),
             'countPembangunan'  => $pembangunanModel->countAll(),
+            'countPeta'         => $petaModel->countAll(),
+            'countAparatur'     => $aparaturModel->countAll(),
+            'latestApbdes'      => $latestApbdes,
             'latestAduan'       => $pengaduanModel->orderBy('id', 'DESC')->limit(5)->findAll(),
             'latestBerita'      => $beritaModel->getLatest(5),
+            'latestAgenda'      => $agendaModel->orderBy('tanggal_mulai', 'DESC')->limit(4)->findAll(),
         ];
 
         return view('admin/dashboard/index', $data);
     }
 }
+
