@@ -72,11 +72,39 @@
         const centerLat = <?= !empty($desa['koordinat_lat']) ? (float)$desa['koordinat_lat'] : -7.3683708 ?>;
         const centerLng = <?= !empty($desa['koordinat_lng']) ? (float)$desa['koordinat_lng'] : 121.1260432 ?>;
 
-        window.desaMap = L.map('map').setView([centerLat, centerLng], 14);
+        // Base Layer 1: Google Hybrid (Satelit + Label Jalan & Wilayah)
+        const googleHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+            attribution: '&copy; Google Maps'
+        });
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // Base Layer 2: Esri World Imagery Satelit
+        const esriSatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19,
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS'
+        });
+
+        // Base Layer 3: OpenStreetMap Jalan
+        const osmStreet = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
             attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(window.desaMap);
+        });
+
+        // Init Map with Google Hybrid as default
+        window.desaMap = L.map('map', {
+            center: [centerLat, centerLng],
+            zoom: 14,
+            layers: [googleHybrid]
+        });
+
+        // Layer Switcher
+        const baseMaps = {
+            "Citra Satelit": googleHybrid,
+            "Satelit Esri": esriSatellite,
+            "Peta Jalan (OSM)": osmStreet
+        };
+        L.control.layers(baseMaps, null, { position: 'topright' }).addTo(window.desaMap);
 
         const markers = <?= json_encode($titikList) ?>;
         const bounds = [];
@@ -87,12 +115,12 @@
                 const lng = parseFloat(pt.lng);
                 bounds.push([lat, lng]);
 
-                let popupHtml = '<div style="font-family: inherit; font-size: 0.88rem; min-width: 200px;">' +
-                    '<span style="display:inline-block; font-size: 0.72rem; font-weight: bold; color: #059669; text-transform: uppercase; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; margin-bottom: 4px;">' + (pt.kategori || '') + '</span>' +
+                let popupHtml = '<div style="font-family: inherit; font-size: 0.88rem; min-width: 220px; padding: 4px;">' +
+                    '<span style="display:inline-block; font-size: 0.72rem; font-weight: bold; color: #059669; text-transform: uppercase; background: #ecfdf5; padding: 2px 8px; border-radius: 4px; margin-bottom: 6px;">' + (pt.kategori || '') + '</span>' +
                     '<h4 style="font-weight: 800; color: #0f172a; margin: 2px 0 6px; font-size: 1rem;">' + (pt.nama || '') + '</h4>' +
-                    '<p style="color: #475569; font-size: 0.82rem; margin: 0 0 6px; line-height: 1.4;">' + (pt.deskripsi || '') + '</p>' +
-                    '<div style="color: #64748b; font-size: 0.78rem; border-top: 1px solid #f1f5f9; padding-top: 4px;">' +
-                    '<i data-lucide="map-pin" style="width:12px;height:12px;display:inline;"></i> ' + (pt.alamat || '') +
+                    '<p style="color: #475569; font-size: 0.84rem; margin: 0 0 8px; line-height: 1.4;">' + (pt.deskripsi || '') + '</p>' +
+                    '<div style="color: #64748b; font-size: 0.78rem; border-top: 1px solid #f1f5f9; padding-top: 6px; display: flex; align-items: center; gap: 4px;">' +
+                    '<span>📍 ' + (pt.alamat || '') + '</span>' +
                     '</div>' +
                 '</div>';
 
