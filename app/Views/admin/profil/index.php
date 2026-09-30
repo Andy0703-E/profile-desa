@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
 
-<form action="<?= base_url('admin/profil/update') ?>" method="post">
+<form action="<?= base_url('admin/profil/update') ?>" method="post" enctype="multipart/form-data">
     <?= csrf_field() ?>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
@@ -132,6 +132,59 @@
             <div class="form-group">
                 <label class="form-label">Batas Barat</label>
                 <input type="text" name="batas_barat" class="form-control" value="<?= esc($profil['batas_barat'] ?? '') ?>">
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 class="card-title" style="margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">5. Media &amp; Gambar Banner Hero Homepage</h3>
+        
+        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; align-items: start;">
+            <div>
+                <div class="form-group">
+                    <label class="form-label">Ganti Foto Banner Hero Utama</label>
+                    <input type="file" name="hero_image" class="form-control" accept="image/jpeg,image/png,image/webp">
+                    <small style="color: #64748b; display: block; margin-top: 0.4rem;">
+                        Format yang didukung: JPG, PNG, WEBP (Maksimal 5MB). Resolusi disarankan: 1920x1080px untuk tampilan slider parallax optimal.
+                    </small>
+                </div>
+
+                <div class="form-group" style="margin-top: 1.25rem;">
+                    <label class="form-label">Ganti Logo Desa</label>
+                    <input type="file" name="logo" class="form-control" accept="image/jpeg,image/png,image/webp,image/svg+xml">
+                    <small style="color: #64748b; display: block; margin-top: 0.4rem;">
+                        Format: PNG, WEBP, SVG (Maksimal 2MB, latar belakang transparan).
+                    </small>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1.15rem; background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: 12px;">
+                    <div style="font-weight: 800; color: #065f46; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i data-lucide="sliders" style="width: 18px; height: 18px;"></i>
+                        Kelola Teks &amp; Gambar Tiap Slide Hero
+                    </div>
+                    <p style="font-size: 0.82rem; color: #047857; margin-bottom: 0.85rem; line-height: 1.4;">
+                        Untuk merubah judul, subjudul narasi, urutan, serta mengganti masing-masing foto slide carousel beranda yang bisa digeser otomatis dan manual:
+                    </p>
+                    <a href="<?= base_url('admin/slider') ?>" class="btn-primary-admin" style="font-size: 0.85rem; padding: 0.5rem 1.25rem; display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none;">
+                        <span>Buka Manajemen Slider Hero</span>
+                        <i data-lucide="arrow-right" style="width: 15px; height: 15px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <label class="form-label">Pratinjau Banner Hero Saat Ini</label>
+                <div style="width: 100%; height: 160px; border-radius: 12px; overflow: hidden; border: 1.5px solid var(--border); background: #0f172a; position: relative;">
+                    <?php 
+                        $currentHero = !empty($desa['hero_image']) && file_exists(FCPATH . $desa['hero_image']) 
+                            ? base_url(esc($desa['hero_image'])) 
+                            : base_url('images/background.webp');
+                    ?>
+                    <img src="<?= $currentHero ?>" alt="Banner Hero Desa" style="width: 100%; height: 100%; object-fit: cover;">
+                    <span style="position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.65); color: #ffffff; font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 4px;">
+                        Aktif di Homepage
+                    </span>
+                </div>
             </div>
         </div>
     </div>

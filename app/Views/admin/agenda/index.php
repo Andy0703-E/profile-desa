@@ -51,7 +51,8 @@
                             </td>
                             <td style="padding: 0.85rem 1rem; color: #64748b; font-size: 0.82rem;"><?= esc($row['lokasi']) ?></td>
                             <td style="padding: 0.85rem 1rem; text-align: center;">
-                                <span style="font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; background: #eff6ff; color: #2563eb; text-transform: uppercase;">
+                                <span style="font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase;
+                                    <?= $row['status'] === 'selesai' ? 'background: #ecfdf5; color: #059669;' : ($row['status'] === 'berlangsung' ? 'background: #eff6ff; color: #2563eb;' : ($row['status'] === 'dibatalkan' ? 'background: #fee2e2; color: #ef4444;' : 'background: #fef3c7; color: #d97706;')) ?>">
                                     <?= str_replace('_', ' ', esc($row['status'])) ?>
                                 </span>
                             </td>

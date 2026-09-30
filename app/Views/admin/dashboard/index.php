@@ -440,6 +440,16 @@
             <div style="font-size: 0.74rem; color: #64748b; font-weight: 600; margin-top: 2px;">Aparatur Desa</div>
         </div>
     </div>
+
+    <a href="<?= base_url('admin/kontak') ?>" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.85rem; text-decoration: none; transition: transform 0.2s;">
+        <div style="width: 40px; height: 40px; border-radius: 10px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="mail" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: #0f172a; line-height: 1;"><?= $countPesan ?></div>
+            <div style="font-size: 0.74rem; color: #64748b; font-weight: 600; margin-top: 2px;">Pesan &amp; Aspirasi Warga</div>
+        </div>
+    </a>
 </div>
 
 <!-- 4. Area Konten Utama (2 Kolom: Laporan & Berita/Pintasan) -->
@@ -520,7 +530,7 @@
                                 </td>
                                 <td style="text-align: right;">
                                     <a href="<?= base_url('admin/pengaduan/detail/' . $row['id']) ?>" 
-                                       style="padding: 0.35rem 0.75rem; border-radius: 6px; background: #ecfdf5; color: #065f46; font-size: 0.75rem; font-weight: 700; text-decoration: none; display: inline-block;">
+                                        style="padding: 0.35rem 0.75rem; border-radius: 6px; background: #ecfdf5; color: #065f46; font-size: 0.75rem; font-weight: 700; text-decoration: none; display: inline-block;">
                                         Tanggapi
                                     </a>
                                 </td>
@@ -529,6 +539,51 @@
                     <?php endif; ?>
                 </tbody>
             </table>
+        </div>
+
+        <!-- Pesan & Aspirasi Warga Terbaru dari Floating Widget Beranda -->
+        <div style="border-top: 1px solid var(--border); padding-top: 1.25rem; margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 0.95rem; color: #0f172a;">
+                    <i data-lucide="mail" style="width: 17px; height: 17px; color: #059669;"></i>
+                    <span>Pesan &amp; Aspirasi Masuk dari Warga (Beranda)</span>
+                </div>
+                <a href="<?= base_url('admin/kontak') ?>" class="modern-card-link" style="font-size: 0.75rem;">
+                    Buka Kotak Masuk &rarr;
+                </a>
+            </div>
+
+            <?php if (empty($latestPesan)): ?>
+                <div style="text-align: center; color: #94a3b8; padding: 1.25rem; font-size: 0.85rem;">
+                    Belum ada pesan atau aspirasi baru dari warga.
+                </div>
+            <?php else: ?>
+                <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+                    <?php foreach ($latestPesan as $p): ?>
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.2rem;">
+                                    <strong style="color: #0f172a; font-size: 0.88rem;"><?= esc($p['nama']) ?></strong>
+                                    <span style="font-size: 0.72rem; color: #059669; background: #ecfdf5; padding: 0.15rem 0.5rem; border-radius: 9999px; font-weight: 700;">
+                                        <?= esc($p['subjek']) ?>
+                                    </span>
+                                </div>
+                                <p style="font-size: 0.8rem; color: #475569; margin: 0; line-height: 1.4;">
+                                    <?= character_limiter(esc($p['pesan']), 90) ?>
+                                </p>
+                            </div>
+                            <div style="text-align: right; flex-shrink: 0;">
+                                <div style="font-size: 0.7rem; color: #94a3b8; margin-bottom: 0.25rem;">
+                                    <?= date('d M, H:i', strtotime($p['created_at'])) ?>
+                                </div>
+                                <a href="<?= base_url('admin/kontak') ?>" style="font-size: 0.75rem; color: #0b6045; font-weight: 700; text-decoration: none;">
+                                    Rincian &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 

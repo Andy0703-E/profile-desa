@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Models\DusunModel;
 use App\Models\PengaduanModel;
 
 class PengaduanController extends BaseController
@@ -10,11 +11,17 @@ class PengaduanController extends BaseController
     public function index()
     {
         $pengaduanModel = new PengaduanModel();
+        $dusunModel = new DusunModel();
+
         $status = $this->request->getGet('status');
+        $dusun = $this->request->getGet('dusun');
 
         $builder = $pengaduanModel->orderBy('id', 'DESC');
         if ($status && $status !== 'semua') {
             $builder->where('status', $status);
+        }
+        if ($dusun && $dusun !== 'semua') {
+            $builder->where('dusun', $dusun);
         }
 
         $list = $builder->findAll();
@@ -23,6 +30,8 @@ class PengaduanController extends BaseController
             'title'          => 'Kelola Pengaduan Warga',
             'list'           => $list,
             'selectedStatus' => $status ?? 'semua',
+            'selectedDusun'  => $dusun ?? 'semua',
+            'dusunList'      => $dusunModel->orderBy('nama_dusun', 'ASC')->findAll(),
         ]);
     }
 

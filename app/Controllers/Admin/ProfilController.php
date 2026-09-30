@@ -32,6 +32,8 @@ class ProfilController extends BaseController
             'jumlah_kk'       => 'permit_empty|numeric',
             'email'           => 'permit_empty|valid_email|max_length[100]',
             'telepon'         => 'permit_empty|max_length[50]',
+            'hero_image'      => 'permit_empty|max_size[hero_image,5120]|ext_in[hero_image,jpg,jpeg,png,webp]',
+            'logo'            => 'permit_empty|max_size[logo,2048]|ext_in[logo,jpg,jpeg,png,webp,svg]',
         ];
 
         if (! $this->validate($rules)) {
@@ -55,6 +57,30 @@ class ProfilController extends BaseController
             'email'           => (string) $this->request->getPost('email'),
             'jam_pelayanan'   => (string) $this->request->getPost('jam_pelayanan'),
         ];
+
+        // Handle Hero Image Upload
+        $heroFile = $this->request->getFile('hero_image');
+        if ($heroFile && $heroFile->isValid() && ! $heroFile->hasMoved()) {
+            $uploadDir = FCPATH . 'uploads/desa';
+            if (! is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+            $newName = $heroFile->getRandomName();
+            $heroFile->move($uploadDir, $newName);
+            $desaData['hero_image'] = 'uploads/desa/' . $newName;
+        }
+
+        // Handle Logo Upload
+        $logoFile = $this->request->getFile('logo');
+        if ($logoFile && $logoFile->isValid() && ! $logoFile->hasMoved()) {
+            $uploadDir = FCPATH . 'uploads/desa';
+            if (! is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+            $newName = $logoFile->getRandomName();
+            $logoFile->move($uploadDir, $newName);
+            $desaData['logo'] = 'uploads/desa/' . $newName;
+        }
         
         $desa = $desaModel->getInfo();
         if ($desa) {

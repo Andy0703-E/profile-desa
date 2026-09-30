@@ -12,6 +12,7 @@ use App\Models\PembangunanModel;
 use App\Models\PetaTitikModel;
 use App\Models\PemerintahanModel;
 use App\Models\ApbdesModel;
+use App\Models\KontakModel;
 
 class DashboardController extends BaseController
 {
@@ -26,6 +27,7 @@ class DashboardController extends BaseController
         $petaModel = new PetaTitikModel();
         $aparaturModel = new PemerintahanModel();
         $apbdesModel = new ApbdesModel();
+        $kontakModel = new KontakModel();
 
         // APBDes summary
         $latestApbdes = $apbdesModel->orderBy('tahun', 'DESC')->first();
@@ -42,6 +44,8 @@ class DashboardController extends BaseController
             'countPendingAduan' => $countPendingAduan,
             'countProsesAduan'  => $countProsesAduan,
             'countSelesaiAduan' => $countSelesaiAduan,
+            'countPesan'        => $kontakModel->countAll(),
+            'latestPesan'       => $kontakModel->orderBy('created_at', 'DESC')->limit(5)->findAll(),
             'countUmkm'         => $umkmModel->countAll(),
             'countWisata'       => $wisataModel->countAll(),
             'countAgenda'       => $agendaModel->countAll(),

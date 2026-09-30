@@ -157,7 +157,11 @@
     <!-- 1. Kepala Desa Card & Sambutan -->
     <div id="kades" style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 2rem; margin-bottom: 2.5rem; display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
         <div style="width: 140px; height: 170px; border-radius: 12px; background: #f1f5f9; overflow: hidden; flex-shrink: 0; border: 2px solid #e2e8f0;">
-            <img src="<?= base_url('images/avatar-pejabat.svg') ?>" alt="Kepala Desa" style="width: 100%; height: 100%; object-fit: cover;">
+            <?php if (!empty($kades['foto'])): ?>
+                <img src="<?= base_url(esc($kades['foto'])) ?>" alt="Kepala Desa" style="width: 100%; height: 100%; object-fit: cover;">
+            <?php else: ?>
+                <img src="<?= base_url('images/avatar-pejabat.svg') ?>" alt="Kepala Desa" style="width: 100%; height: 100%; object-fit: cover;">
+            <?php endif; ?>
         </div>
         <div style="flex: 1; min-width: 280px;">
             <span style="font-size: 0.8rem; font-weight: 700; color: #059669; text-transform: uppercase; letter-spacing: 0.05em;">Kepala Desa Batu Bingkung</span>
@@ -221,7 +225,11 @@
                 <?php foreach ($perangkat as $p): ?>
                     <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 1.25rem; display: flex; gap: 1rem; align-items: flex-start; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
                         <div style="width: 58px; height: 68px; border-radius: 8px; background: #e2e8f0; overflow: hidden; flex-shrink: 0;">
-                            <img src="<?= base_url('images/avatar-pejabat.svg') ?>" alt="<?= esc($p['nama']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                            <?php if (!empty($p['foto'])): ?>
+                                <img src="<?= base_url(esc($p['foto'])) ?>" alt="<?= esc($p['nama']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                            <?php else: ?>
+                                <img src="<?= base_url('images/avatar-pejabat.svg') ?>" alt="<?= esc($p['nama']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                            <?php endif; ?>
                         </div>
                         <div style="flex: 1;">
                             <span style="display: inline-block; font-size: 0.72rem; font-weight: 700; color: #059669; text-transform: uppercase;">

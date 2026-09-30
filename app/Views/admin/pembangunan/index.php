@@ -53,7 +53,8 @@
                                 </div>
                             </td>
                             <td style="padding: 0.85rem 1rem; text-align: center;">
-                                <span style="font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; <?= $row['status'] === 'selesai' ? 'background: #ecfdf5; color: #059669;' : 'background: #fef3c7; color: #d97706;' ?>">
+                                <span style="font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; 
+                                    <?= $row['status'] === 'selesai' ? 'background: #ecfdf5; color: #059669;' : ($row['status'] === 'berjalan' ? 'background: #eff6ff; color: #2563eb;' : 'background: #fef3c7; color: #d97706;') ?>">
                                     <?= esc($row['status']) ?>
                                 </span>
                             </td>

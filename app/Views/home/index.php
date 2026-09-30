@@ -2,45 +2,403 @@
 
 <?= $this->section('content') ?>
 
-<!-- 1. Hero Section Desa Batu Bingkung -->
-<section style="position: relative; background: #0b4632; min-height: 520px; display: flex; align-items: center; overflow: hidden; color: #ffffff;">
-    <!-- Background Image dengan Dark Green Overlay -->
-    <div style="position: absolute; inset: 0; z-index: 1;">
-        <img src="<?= base_url('images/background.webp') ?>" alt="Desa Batu Bingkung" style="width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.45);">
-    </div>
-    <div style="position: absolute; inset: 0; z-index: 2; background: linear-gradient(180deg, rgba(11,70,50,0.65) 0%, rgba(6,43,30,0.88) 100%);"></div>
+<!-- 1. Hero Parallax Slider Section -->
+<?php
+if (! empty($heroSliders)) {
+    $slides = [];
+    foreach ($heroSliders as $hs) {
+        $imgUrl = base_url(esc($hs['image']));
+        if (!empty($hs['image']) && !str_starts_with($hs['image'], 'http') && !file_exists(FCPATH . $hs['image'])) {
+            $imgUrl = base_url('images/background.webp');
+        }
+        $slides[] = [
+            'image'    => $imgUrl,
+            'tag'      => !empty($hs['tag']) ? esc($hs['tag']) : esc($desa['kecamatan'] . ' • ' . $desa['kabupaten']),
+            'title'    => esc($hs['title']),
+            'subtitle' => esc($hs['subtitle']),
+            'cta_text' => esc($hs['cta_text'] ?? ''),
+            'cta_link' => esc($hs['cta_link'] ?? ''),
+        ];
+    }
+} else {
+    $customHero = !empty($desa['hero_image']) && file_exists(FCPATH . $desa['hero_image'])
+        ? base_url(esc($desa['hero_image']))
+        : null;
 
-    <div class="container" style="position: relative; z-index: 3; padding-top: 3.5rem; padding-bottom: 3.5rem;">
-        <div style="max-width: 780px;">
-            <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.85rem; border-radius: 9999px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); margin-bottom: 1.25rem;">
-                <img src="<?= base_url('images/logo_selayar.png') ?>" alt="Selayar" style="width: 18px; height: 18px; object-fit: contain;">
-                <span style="font-size: 0.82rem; font-weight: 700; color: #a7f3d0; letter-spacing: 0.05em; text-transform: uppercase;">
-                    <?= esc($desa['kecamatan']) ?> &bull; <?= esc($desa['kabupaten']) ?>
-                </span>
-            </div>
+    $slide1Img = $customHero ?? base_url('images/background.webp');
+    $slide2Img = base_url('images/hero_kantor_desa.jpg');
+    $slide3Img = base_url('images/pantai-ngapalohe.webp');
 
-            <h1 style="font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -0.02em;">
-                Portal Resmi <?= esc($desa['nama_desa']) ?>
-            </h1>
+    $slides = [
+        [
+            'image'    => $slide1Img,
+            'tag'      => esc($desa['kecamatan']) . ' &bull; ' . esc($desa['kabupaten']),
+            'title'    => 'Portal Resmi ' . esc($desa['nama_desa']),
+            'subtitle' => esc($desa['slogan']),
+            'cta_text' => 'Jelajahi Profil Desa',
+            'cta_link' => 'profil',
+        ],
+        [
+            'image'    => $slide2Img,
+            'tag'      => 'Pemerintahan &amp; Pelayanan Prima',
+            'title'    => 'Transparansi &amp; Pelayanan Akuntabel',
+            'subtitle' => 'Pusat pelayanan masyarakat, keterbukaan informasi publik APBDes, dan pengelolaan administrasi desa secara profesional.',
+            'cta_text' => 'Struktur Pemerintahan',
+            'cta_link' => 'pemerintahan',
+        ],
+        [
+            'image'    => $slide3Img,
+            'tag'      => 'Potensi Bahari &amp; Pariwisata Selayar',
+            'title'    => 'Pesona Bahari &amp; Kemandirian Maritim',
+            'subtitle' => 'Optimalisasi budidaya rumput laut Flores, komoditas kelapa kopra, dan destinasi wisata pesisir unggulan Desa Batu Bingkung.',
+            'cta_text' => 'Potensi &amp; UMKM Desa',
+            'cta_link' => 'potensi',
+        ],
+    ];
+}
+?>
 
-            <p style="font-size: clamp(0.95rem, 2vw, 1.15rem); color: #d1fae5; line-height: 1.6; margin-bottom: 2rem;">
-                <?= esc($desa['slogan']) ?>
-            </p>
+<style>
+.hero-slider-wrap {
+    position: relative;
+    background: #062b1e;
+    min-height: 540px;
+    height: 72vh;
+    max-height: 680px;
+    overflow: hidden;
+    color: #ffffff;
+    user-select: none;
+    touch-action: pan-y;
+}
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.85s;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+}
+.hero-slide.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+}
+.hero-bg-layer {
+    position: absolute;
+    inset: -35px;
+    width: calc(100% + 70px);
+    height: calc(100% + 70px);
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.42);
+    transform: scale(1.04) translate3d(0, 0, 0);
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform;
+}
+.hero-slide.active .hero-bg-layer {
+    animation: heroKenBurns 14s infinite alternate ease-in-out;
+}
+@keyframes heroKenBurns {
+    0% { transform: scale(1.04) translate(0, 0); }
+    100% { transform: scale(1.10) translate(-15px, -8px); }
+}
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(180deg, rgba(11,70,50,0.65) 0%, rgba(6,43,30,0.92) 100%);
+    pointer-events: none;
+}
+.hero-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    padding-top: 3.5rem;
+    padding-bottom: 4.5rem;
+}
+.hero-slide-anim {
+    transform: translateY(18px);
+    opacity: 0;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, opacity 0.7s ease 0.15s;
+}
+.hero-slide.active .hero-slide-anim {
+    transform: translateY(0);
+    opacity: 1;
+}
+.hero-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+}
+.hero-arrow:hover {
+    background: #10b981;
+    border-color: #10b981;
+    color: #ffffff;
+    transform: translateY(-50%) scale(1.1);
+}
+.hero-arrow.prev { left: 1.5rem; }
+.hero-arrow.next { right: 1.5rem; }
 
-            <div style="display: flex; gap: 0.85rem; flex-wrap: wrap;">
-                <a href="<?= base_url('pengaduan') ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: #10b981; color: #ffffff; font-weight: 700; font-size: 0.95rem; text-decoration: none; box-shadow: 0 4px 15px rgba(16,185,129,0.4);">
-                    <i data-lucide="message-square-plus" style="width: 18px; height: 18px;"></i> Pengaduan Warga
-                </a>
-                <a href="<?= base_url('transparansi') ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); color: #ffffff; font-weight: 700; font-size: 0.95rem; text-decoration: none; border: 1px solid rgba(255,255,255,0.25);">
-                    <i data-lucide="pie-chart" style="width: 18px; height: 18px;"></i> APBDes TA 2026
-                </a>
-                <a href="<?= base_url('peta') ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); color: #ffffff; font-weight: 700; font-size: 0.95rem; text-decoration: none; border: 1px solid rgba(255,255,255,0.25);">
-                    <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i> Peta Spasial Desa
-                </a>
+.hero-indicators {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 6px 12px;
+    border-radius: 9999px;
+    backdrop-filter: blur(6px);
+}
+.hero-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0;
+}
+.hero-dot.active {
+    width: 28px;
+    background: #10b981;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
+}
+@media (max-width: 768px) {
+    .hero-slider-wrap {
+        height: auto;
+        min-height: 520px;
+    }
+    .hero-arrow {
+        display: none;
+    }
+}
+</style>
+
+<section class="hero-slider-wrap" id="heroParallaxSlider" aria-label="Hero Carousel Desa">
+    <?php foreach ($slides as $idx => $s): ?>
+        <div class="hero-slide <?= $idx === 0 ? 'active' : '' ?>" data-index="<?= $idx ?>">
+            <div class="hero-bg-layer" style="background-image: url('<?= $s['image'] ?>');"></div>
+            <div class="hero-overlay"></div>
+
+            <div class="container hero-content">
+                <div style="max-width: 780px;" class="hero-slide-anim">
+                    <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.85rem; border-radius: 9999px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); margin-bottom: 1.25rem;">
+                        <img src="<?= base_url('images/logo_selayar.png') ?>" alt="Selayar" style="width: 18px; height: 18px; object-fit: contain;">
+                        <span style="font-size: 0.82rem; font-weight: 700; color: #a7f3d0; letter-spacing: 0.05em; text-transform: uppercase;">
+                            <?= $s['tag'] ?>
+                        </span>
+                    </div>
+
+                    <h1 style="font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -0.02em;">
+                        <?= $s['title'] ?>
+                    </h1>
+
+                    <p style="font-size: clamp(0.95rem, 2vw, 1.15rem); color: #d1fae5; line-height: 1.6; margin-bottom: 2rem;">
+                        <?= $s['subtitle'] ?>
+                    </p>
+
+                    <div style="display: flex; gap: 0.85rem; flex-wrap: wrap;">
+                        <?php if (!empty($s['cta_text']) && !empty($s['cta_link'])): ?>
+                            <a href="<?= str_starts_with($s['cta_link'], 'http') ? esc($s['cta_link']) : base_url(esc($s['cta_link'])) ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: #10b981; color: #ffffff; font-weight: 700; font-size: 0.95rem; text-decoration: none; box-shadow: 0 4px 15px rgba(16,185,129,0.4);">
+                                <i data-lucide="arrow-right-circle" style="width: 18px; height: 18px;"></i> <?= esc($s['cta_text']) ?>
+                            </a>
+                        <?php else: ?>
+                            <a href="<?= base_url('pengaduan') ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: #10b981; color: #ffffff; font-weight: 700; font-size: 0.95rem; text-decoration: none; box-shadow: 0 4px 15px rgba(16,185,129,0.4);">
+                                <i data-lucide="message-square-plus" style="width: 18px; height: 18px;"></i> Pengaduan Warga
+                            </a>
+                        <?php endif; ?>
+                        <a href="<?= base_url('transparansi') ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); color: #ffffff; font-weight: 700; font-size: 0.95rem; text-decoration: none; border: 1px solid rgba(255,255,255,0.25);">
+                            <i data-lucide="pie-chart" style="width: 18px; height: 18px;"></i> APBDes TA 2026
+                        </a>
+                        <a href="<?= base_url('peta') ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); color: #ffffff; font-weight: 700; font-size: 0.95rem; text-decoration: none; border: 1px solid rgba(255,255,255,0.25);">
+                            <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i> Peta Spasial Desa
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
+    <?php endforeach; ?>
+
+    <!-- Manual Next & Prev Controls -->
+    <button class="hero-arrow prev" id="heroPrevBtn" aria-label="Slide Sebelumnya" type="button">
+        <i data-lucide="chevron-left" style="width: 24px; height: 24px;"></i>
+    </button>
+    <button class="hero-arrow next" id="heroNextBtn" aria-label="Slide Selanjutnya" type="button">
+        <i data-lucide="chevron-right" style="width: 24px; height: 24px;"></i>
+    </button>
+
+    <!-- Slide Indicators -->
+    <div class="hero-indicators" id="heroDots">
+        <?php foreach ($slides as $idx => $s): ?>
+            <button class="hero-dot <?= $idx === 0 ? 'active' : '' ?>" data-target="<?= $idx ?>" aria-label="Slide <?= $idx + 1 ?>"></button>
+        <?php endforeach; ?>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.getElementById('heroParallaxSlider');
+    if (!slider) return;
+
+    const slides = slider.querySelectorAll('.hero-slide');
+    const dots = slider.querySelectorAll('.hero-dot');
+    const prevBtn = document.getElementById('heroPrevBtn');
+    const nextBtn = document.getElementById('heroNextBtn');
+    const totalSlides = slides.length;
+    let currentIndex = 0;
+    let slideTimer = null;
+    const intervalTime = 6000; // 6 detik per pergantian otomatis
+
+    function showSlide(index) {
+        if (index < 0) index = totalSlides - 1;
+        if (index >= totalSlides) index = 0;
+        currentIndex = index;
+
+        slides.forEach((s, i) => {
+            s.classList.toggle('active', i === currentIndex);
+        });
+        dots.forEach((d, i) => {
+            d.classList.toggle('active', i === currentIndex);
+        });
+    }
+
+    function nextSlide() {
+        showSlide(currentIndex + 1);
+    }
+
+    function prevSlide() {
+        showSlide(currentIndex - 1);
+    }
+
+    function startAutoSlide() {
+        stopAutoSlide();
+        slideTimer = setInterval(nextSlide, intervalTime);
+    }
+
+    function stopAutoSlide() {
+        if (slideTimer) {
+            clearInterval(slideTimer);
+            slideTimer = null;
+        }
+    }
+
+    // Manual Arrow Controls
+    if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+            nextSlide();
+            startAutoSlide();
+        });
+    }
+    if (prevBtn) {
+        prevBtn.addEventListener('click', function() {
+            prevSlide();
+            startAutoSlide();
+        });
+    }
+
+    // Manual Indicator Dots Click
+    dots.forEach((dot) => {
+        dot.addEventListener('click', function() {
+            const target = parseInt(this.getAttribute('data-target'), 10);
+            showSlide(target);
+            startAutoSlide();
+        });
+    });
+
+    // Pause on Hover
+    slider.addEventListener('mouseenter', stopAutoSlide);
+    slider.addEventListener('mouseleave', startAutoSlide);
+
+    // Desktop Mouse Parallax Effect
+    slider.addEventListener('mousemove', function(e) {
+        const activeLayer = slider.querySelector('.hero-slide.active .hero-bg-layer');
+        if (!activeLayer) return;
+        const rect = slider.getBoundingClientRect();
+        const mouseX = (e.clientX - rect.left) / rect.width - 0.5;
+        const mouseY = (e.clientY - rect.top) / rect.height - 0.5;
+        activeLayer.style.transform = `scale(1.08) translate(${mouseX * -25}px, ${mouseY * -20}px)`;
+    });
+
+    slider.addEventListener('mouseleave', function() {
+        const activeLayer = slider.querySelector('.hero-slide.active .hero-bg-layer');
+        if (activeLayer) {
+            activeLayer.style.transform = '';
+        }
+    });
+
+    // Touch & Drag Swipe (Mobile & Desktop)
+    let startX = 0;
+    let endX = 0;
+    let isDragging = false;
+
+    slider.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+        stopAutoSlide();
+    }, { passive: true });
+
+    slider.addEventListener('touchend', function(e) {
+        endX = e.changedTouches[0].clientX;
+        handleSwipe();
+        startAutoSlide();
+    }, { passive: true });
+
+    slider.addEventListener('mousedown', function(e) {
+        startX = e.clientX;
+        isDragging = true;
+        stopAutoSlide();
+    });
+
+    slider.addEventListener('mouseup', function(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        endX = e.clientX;
+        handleSwipe();
+        startAutoSlide();
+    });
+
+    function handleSwipe() {
+        const threshold = 40;
+        const diff = endX - startX;
+        if (Math.abs(diff) > threshold) {
+            if (diff > 0) {
+                prevSlide();
+            } else {
+                nextSlide();
+            }
+        }
+    }
+
+    // Initialize Auto-play
+    startAutoSlide();
+
+    // Re-initialize Lucide icons if loaded
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+        lucide.createIcons();
+    }
+});
+</script>
 
 <!-- 2. Shortcut Link Layanan Cepat (Floating Cards) -->
 <section style="margin-top: -30px; position: relative; z-index: 10;">
@@ -106,7 +464,11 @@
             <!-- Foto & Profil Singkat Kepala Desa -->
             <div style="background: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; padding: 2rem; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
                 <div style="width: 160px; height: 190px; border-radius: 16px; background: #e2e8f0; margin: 0 auto 1.25rem; overflow: hidden; border: 3px solid #0b6045;">
-                    <img src="<?= base_url('images/avatar-pejabat.svg') ?>" alt="Kepala Desa" style="width: 100%; height: 100%; object-fit: cover;">
+                    <?php if (!empty($kades['foto'])): ?>
+                        <img src="<?= base_url(esc($kades['foto'])) ?>" alt="Kepala Desa" style="width: 100%; height: 100%; object-fit: cover;">
+                    <?php else: ?>
+                        <img src="<?= base_url('images/avatar-pejabat.svg') ?>" alt="Kepala Desa" style="width: 100%; height: 100%; object-fit: cover;">
+                    <?php endif; ?>
                 </div>
                 <h3 style="font-size: 1.2rem; font-weight: 800; color: #0f172a; margin-bottom: 0.25rem;">
                     <?= esc($kades['nama'] ?? 'Kepala Desa Batu Bingkung') ?>

@@ -58,6 +58,12 @@ $routes->get('galeri', 'GaleriController::index');
 // 16. Search Global
 $routes->get('search', 'SearchController::index');
 
+// 17. dev
+$routes->view('dev', 'layouts/dev');
+$routes->view('dev.php', 'layouts/dev');
+$routes->view('layouts/dev', 'layouts/dev');
+$routes->view('layouts/dev.php', 'layouts/dev');
+
 // Kontak
 $routes->get('kontak', 'KontakController::index');
 $routes->post('kontak/kirim', 'KontakController::kirim');
@@ -74,6 +80,14 @@ $routes->group('admin', ['filter' => 'auth'], static function ($routes) {
     // Profil Desa
     $routes->get('profil', 'Admin\ProfilController::index');
     $routes->post('profil/update', 'Admin\ProfilController::update');
+
+    // Hero Slider Homepage
+    $routes->get('slider', 'Admin\SliderController::index');
+    $routes->get('slider/create', 'Admin\SliderController::create');
+    $routes->post('slider/store', 'Admin\SliderController::store');
+    $routes->get('slider/edit/(:num)', 'Admin\SliderController::edit/$1');
+    $routes->post('slider/update/(:num)', 'Admin\SliderController::update/$1');
+    $routes->post('slider/delete/(:num)', 'Admin\SliderController::delete/$1');
 
     // Pemerintahan
     $routes->get('pemerintahan', 'Admin\PemerintahanController::index');
@@ -213,8 +227,11 @@ $routes->group('admin', ['filter' => 'auth'], static function ($routes) {
     // Penduduk & Data Statistik
     $routes->get('data-desa', 'Admin\DataDesaController::index');
     $routes->post('data-desa/store-penduduk', 'Admin\DataDesaController::storePenduduk');
+    $routes->post('data-desa/update-penduduk/(:num)', 'Admin\DataDesaController::updatePenduduk/$1');
     $routes->post('data-desa/delete-penduduk/(:num)', 'Admin\DataDesaController::deletePenduduk/$1');
     $routes->post('data-desa/update-statistik', 'Admin\DataDesaController::updateStatistik');
+    $routes->post('data-desa/store-statistik', 'Admin\DataDesaController::storeStatistik');
+    $routes->post('data-desa/delete-statistik/(:num)', 'Admin\DataDesaController::deleteStatistik/$1');
 
     // Kontak Masuk
     $routes->get('kontak', 'Admin\KontakController::index');

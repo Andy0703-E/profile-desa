@@ -19,6 +19,7 @@ use App\Models\UmkmModel;
 use App\Models\WisataModel;
 use App\Models\ProgramUnggulanModel;
 use App\Models\DusunModel;
+use App\Models\HeroSliderModel;
 
 class Home extends BaseController
 {
@@ -39,6 +40,7 @@ class Home extends BaseController
         $wisataModel = new WisataModel();
         $programModel = new ProgramUnggulanModel();
         $dusunModel = new DusunModel();
+        $heroSliderModel = new HeroSliderModel();
 
         $desa = $desaModel->getInfo() ?? [
             'nama_desa' => 'Desa Batu Bingkung',
@@ -95,6 +97,7 @@ class Home extends BaseController
             'dusunCount'        => $dusunCount,
             'umkmCount'         => $umkmCount,
             'wisataCount'       => $wisataCount,
+            'heroSliders'       => $heroSliderModel->getActiveSliders(),
         ];
 
         return view('home/index', $data);

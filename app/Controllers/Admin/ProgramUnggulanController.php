@@ -20,9 +20,13 @@ class ProgramUnggulanController extends BaseController
 
     public function create()
     {
+        $programModel = new ProgramUnggulanModel();
+        $maxUrutan = (int) $programModel->selectMax('urutan')->first()['urutan'];
+
         return view('admin/program/form', [
-            'title' => 'Tambah Program Unggulan',
-            'item'  => null,
+            'title'      => 'Tambah Program Unggulan',
+            'item'       => null,
+            'nextUrutan' => $maxUrutan + 1,
         ]);
     }
 
@@ -33,7 +37,7 @@ class ProgramUnggulanController extends BaseController
             'ringkasan' => 'permit_empty|max_length[500]',
             'deskripsi' => 'permit_empty',
             'icon'      => 'permit_empty|max_length[50]',
-            'status'    => 'permit_empty|in_list[aktif,tidak_aktif]',
+            'status'    => 'permit_empty|in_list[aktif,nonaktif,tidak_aktif]',
             'urutan'    => 'permit_empty|numeric',
             'foto'      => 'permit_empty|max_size[foto,2048]|ext_in[foto,jpg,jpeg,png,webp]',
         ];
@@ -86,7 +90,7 @@ class ProgramUnggulanController extends BaseController
             'ringkasan' => 'permit_empty|max_length[500]',
             'deskripsi' => 'permit_empty',
             'icon'      => 'permit_empty|max_length[50]',
-            'status'    => 'permit_empty|in_list[aktif,tidak_aktif]',
+            'status'    => 'permit_empty|in_list[aktif,nonaktif,tidak_aktif]',
             'urutan'    => 'permit_empty|numeric',
             'foto'      => 'permit_empty|max_size[foto,2048]|ext_in[foto,jpg,jpeg,png,webp]',
         ];

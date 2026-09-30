@@ -8,21 +8,33 @@
         <p style="font-size: 0.85rem; color: #64748b;">Pantau dan tanggapi laporan keluhan atau aspirasi yang masuk dari masyarakat</p>
     </div>
 
-    <!-- Filter Status -->
-    <div style="display: flex; gap: 0.5rem;">
-        <a href="<?= base_url('admin/pengaduan?status=semua') ?>" 
+    <!-- Filter Status & Dusun -->
+    <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+        <form method="get" action="<?= base_url('admin/pengaduan') ?>" style="display: inline-block;">
+            <input type="hidden" name="status" value="<?= esc($selectedStatus) ?>">
+            <select name="dusun" onchange="this.form.submit()" style="padding: 0.35rem 0.75rem; border-radius: 9999px; border: 1px solid #cbd5e1; font-size: 0.8rem; font-weight: 600; background: #fff; color: #475569; outline: none; cursor: pointer;">
+                <option value="semua" <?= $selectedDusun === 'semua' ? 'selected' : '' ?>>Semua Dusun</option>
+                <?php foreach ($dusunList as $d): ?>
+                    <option value="<?= esc($d['nama_dusun']) ?>" <?= $selectedDusun === $d['nama_dusun'] ? 'selected' : '' ?>>
+                        <?= esc($d['nama_dusun']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </form>
+
+        <a href="<?= base_url('admin/pengaduan?status=semua' . ($selectedDusun !== 'semua' ? '&dusun=' . urlencode($selectedDusun) : '')) ?>" 
            style="padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; text-decoration: none; <?= $selectedStatus === 'semua' ? 'background: #0b6045; color: #fff;' : 'background: #f1f5f9; color: #475569;' ?>">
             Semua
         </a>
-        <a href="<?= base_url('admin/pengaduan?status=diajukan') ?>" 
+        <a href="<?= base_url('admin/pengaduan?status=diajukan' . ($selectedDusun !== 'semua' ? '&dusun=' . urlencode($selectedDusun) : '')) ?>" 
            style="padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; text-decoration: none; <?= $selectedStatus === 'diajukan' ? 'background: #f59e0b; color: #fff;' : 'background: #f1f5f9; color: #475569;' ?>">
             Menunggu
         </a>
-        <a href="<?= base_url('admin/pengaduan?status=diproses') ?>" 
+        <a href="<?= base_url('admin/pengaduan?status=diproses' . ($selectedDusun !== 'semua' ? '&dusun=' . urlencode($selectedDusun) : '')) ?>" 
            style="padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; text-decoration: none; <?= $selectedStatus === 'diproses' ? 'background: #2563eb; color: #fff;' : 'background: #f1f5f9; color: #475569;' ?>">
             Diproses
         </a>
-        <a href="<?= base_url('admin/pengaduan?status=selesai') ?>" 
+        <a href="<?= base_url('admin/pengaduan?status=selesai' . ($selectedDusun !== 'semua' ? '&dusun=' . urlencode($selectedDusun) : '')) ?>" 
            style="padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; text-decoration: none; <?= $selectedStatus === 'selesai' ? 'background: #10b981; color: #fff;' : 'background: #f1f5f9; color: #475569;' ?>">
             Selesai
         </a>

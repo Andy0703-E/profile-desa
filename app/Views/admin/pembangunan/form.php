@@ -26,11 +26,22 @@
                 </div>
                 <div>
                     <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.35rem;">Dusun Wilayah *</label>
+                    <?php 
+                    $dusunListOptions = (new \App\Models\DusunModel())->orderBy('nama_dusun', 'ASC')->findAll();
+                    ?>
                     <select name="dusun" required style="width: 100%; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 0.88rem; background: #fff; outline: none;">
-                        <option value="Dusun Pesisir" <?= ($item['dusun'] ?? '') === 'Dusun Pesisir' ? 'selected' : '' ?>>Dusun Pesisir</option>
-                        <option value="Dusun Darat Makmur" <?= ($item['dusun'] ?? '') === 'Dusun Darat Makmur' ? 'selected' : '' ?>>Dusun Darat Makmur</option>
-                        <option value="Dusun Karangan Timur" <?= ($item['dusun'] ?? '') === 'Dusun Karangan Timur' ? 'selected' : '' ?>>Dusun Karangan Timur</option>
-                        <option value="Dusun Bone Tanjung" <?= ($item['dusun'] ?? '') === 'Dusun Bone Tanjung' ? 'selected' : '' ?>>Dusun Bone Tanjung</option>
+                        <?php if (!empty($dusunListOptions)): ?>
+                            <?php foreach ($dusunListOptions as $d): ?>
+                                <option value="<?= esc($d['nama_dusun']) ?>" <?= ($item['dusun'] ?? '') === $d['nama_dusun'] ? 'selected' : '' ?>>
+                                    <?= esc($d['nama_dusun']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="Dusun Limbo" <?= ($item['dusun'] ?? '') === 'Dusun Limbo' ? 'selected' : '' ?>>Dusun Limbo</option>
+                            <option value="Dusun Darat Makmur" <?= ($item['dusun'] ?? '') === 'Dusun Darat Makmur' ? 'selected' : '' ?>>Dusun Darat Makmur</option>
+                            <option value="Dusun Karangan Timur" <?= ($item['dusun'] ?? '') === 'Dusun Karangan Timur' ? 'selected' : '' ?>>Dusun Karangan Timur</option>
+                            <option value="Dusun Bone Tanjung" <?= ($item['dusun'] ?? '') === 'Dusun Bone Tanjung' ? 'selected' : '' ?>>Dusun Bone Tanjung</option>
+                        <?php endif; ?>
                     </select>
                 </div>
             </div>

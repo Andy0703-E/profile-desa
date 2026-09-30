@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -491,6 +491,11 @@
             color: #94a3b8;
         }
 
+        .easter-egg-dev:hover {
+            opacity: 1 !important;
+            transform: scale(1.6);
+        }
+
         /* Mobile Bottom Floating Nav (Exact 4 Tabs in [Image 2]) */
         .mobile-bottom-nav {
             display: none;
@@ -600,7 +605,7 @@
                 <li class="<?= uri_string() === '' || uri_string() === '/' ? 'active' : '' ?>">
                     <a href="<?= base_url() ?>">Beranda</a>
                 </li>
-                
+
                 <!-- Sub Menu 1: Profil Desa -->
                 <li class="nav-dropdown <?= strpos(uri_string(), 'profil') === 0 || strpos(uri_string(), 'pemerintahan') === 0 ? 'active' : '' ?>">
                     <a href="<?= base_url('profil') ?>">
@@ -728,7 +733,7 @@
                 <li class="<?= strpos(uri_string(), 'pengaduan') === 0 ? 'active' : '' ?>">
                     <a href="<?= base_url('pengaduan') ?>">Pengaduan</a>
                 </li>
-                
+
                 <li>
                     <a href="<?= base_url('search') ?>" title="Cari di website" class="desktop-nav-search-btn">
                         <i data-lucide="search" style="width: 16px; height: 16px;"></i>
@@ -756,7 +761,7 @@
                         <span>Beranda</span>
                     </a>
                 </li>
-                
+
                 <li class="mobile-drawer-heading">Profil &amp; Wilayah</li>
                 <li>
                     <a href="<?= base_url('profil') ?>">
@@ -970,6 +975,7 @@
                                 <li><a href="https://kemendagri.go.id" style="color: #6ee7b7;">Website Kemendagri</a></li>
                                 <li><a href="https://cekdptonline.kpu.go.id" style="color: #6ee7b7;">Cek DPT Online</a></li>
                                 <li><a href="https://cekbansos.kemensos.go.id" style="color: #6ee7b7;">Cek Bansos Kemensos</a></li>
+                                <li><a href="<?= base_url('dev') ?>" style="color: #6ee7b7; font-size: 8px; opacity: 0.3; text-decoration: none;">?</a></li>
                             </ul>
                         </div>
                     </div>
@@ -978,11 +984,17 @@
         </div>
 
         <div class="footer-bottom-bar">
-            <div class="container">
-                &copy; <?= date('Y') ?> Powered by <strong>PT Digital Desa Indonesia</strong>
+            <div class="container" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; position: relative;">
+                <span>&copy; <?= date('Y') ?> Powered by <strong>KKN ITSBM Selayar Desa Batu Bingkung 02</strong></span>
+                <a href="<?= base_url('dev') ?>" class="easter-egg-dev" title="Developer" style="opacity: 0.35; display: inline-flex; align-items: center; text-decoration: none; transition: opacity 0.3s, transform 0.3s;">
+                    <img src="<?= base_url('images/developer.jpg') ?>" alt="Developer" style="width: 14px; height: 14px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(16, 185, 129, 0.6); vertical-align: middle;">
+                </a>
             </div>
         </div>
     </footer>
+
+    <!-- Floating Widget Pesan & Aspirasi Masuk dari Warga (Pojok Kanan Bawah) -->
+    <?= $this->include('components/floating_aspirasi') ?>
 
     <!-- Mobile Bottom Floating Navigation Bar ([Image 2]) -->
     <nav class="mobile-bottom-nav" aria-label="Navigasi Bawah">

@@ -25,9 +25,10 @@
                            style="width: 100%; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 0.88rem; outline: none; font-family: monospace;">
                 </div>
                 <div>
-                    <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.35rem;">Urutan Tampil</label>
-                    <input type="number" name="urutan" value="<?= $item['urutan'] ?? 1 ?>" 
+                    <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.35rem;">Nomor Urut Tampil *</label>
+                    <input type="number" name="urutan" value="<?= esc(old('urutan', $item['urutan'] ?? ($nextUrutan ?? 1))) ?>" required min="1"
                            style="width: 100%; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 0.88rem; outline: none;">
+                    <small style="color: #64748b; font-size: 0.75rem;">Urutan tampil pada daftar & halaman depan.</small>
                 </div>
                 <div>
                     <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.35rem;">Status *</label>

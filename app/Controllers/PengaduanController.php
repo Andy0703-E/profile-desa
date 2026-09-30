@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\DesaModel;
+use App\Models\DusunModel;
 use App\Models\PengaduanModel;
 
 class PengaduanController extends BaseController
@@ -11,11 +12,13 @@ class PengaduanController extends BaseController
     {
         $desaModel = new DesaModel();
         $pengaduanModel = new PengaduanModel();
+        $dusunModel = new DusunModel();
 
         $data = [
             'title'       => 'Layanan Pengaduan & Aspirasi Warga',
             'desa'        => $desaModel->getInfo(),
             'aduanPublik' => $pengaduanModel->orderBy('id', 'DESC')->limit(10)->findAll(),
+            'dusunList'   => $dusunModel->orderBy('nama_dusun', 'ASC')->findAll(),
         ];
 
         return view('pengaduan/index', $data);

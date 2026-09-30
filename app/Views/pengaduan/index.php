@@ -73,10 +73,18 @@
                         <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.35rem;">Dusun Domisili *</label>
                         <select name="dusun" required style="width: 100%; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 0.88rem; background: #fff; outline: none;">
                             <option value="">Pilih Dusun...</option>
-                            <option value="Dusun Pesisir" <?= old('dusun') === 'Dusun Pesisir' ? 'selected' : '' ?>>Dusun Pesisir</option>
-                            <option value="Dusun Darat Makmur" <?= old('dusun') === 'Dusun Darat Makmur' ? 'selected' : '' ?>>Dusun Darat Makmur</option>
-                            <option value="Dusun Karangan Timur" <?= old('dusun') === 'Dusun Karangan Timur' ? 'selected' : '' ?>>Dusun Karangan Timur</option>
-                            <option value="Dusun Bone Tanjung" <?= old('dusun') === 'Dusun Bone Tanjung' ? 'selected' : '' ?>>Dusun Bone Tanjung</option>
+                            <?php if (!empty($dusunList)): ?>
+                                <?php foreach ($dusunList as $d): ?>
+                                    <option value="<?= esc($d['nama_dusun']) ?>" <?= old('dusun') === $d['nama_dusun'] ? 'selected' : '' ?>>
+                                        <?= esc($d['nama_dusun']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <option value="Dusun Limbo" <?= old('dusun') === 'Dusun Limbo' ? 'selected' : '' ?>>Dusun Limbo</option>
+                                <option value="Dusun Darat Makmur" <?= old('dusun') === 'Dusun Darat Makmur' ? 'selected' : '' ?>>Dusun Darat Makmur</option>
+                                <option value="Dusun Karangan Timur" <?= old('dusun') === 'Dusun Karangan Timur' ? 'selected' : '' ?>>Dusun Karangan Timur</option>
+                                <option value="Dusun Bone Tanjung" <?= old('dusun') === 'Dusun Bone Tanjung' ? 'selected' : '' ?>>Dusun Bone Tanjung</option>
+                            <?php endif; ?>
                         </select>
                     </div>
                 </div>

@@ -68,21 +68,21 @@
         .brand-logo-small {
             width: 44px;
             height: 44px;
-            border-radius: 12px;
-            background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
             flex-shrink: 0;
-            padding: 4px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(255,255,255,0.2);
+            padding: 0;
+            background: transparent;
+            border: none;
+            box-shadow: none;
         }
 
         .brand-logo-small img {
             width: 100%;
             height: 100%;
             object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
         .brand-meta {
@@ -469,6 +469,12 @@
                 <a href="<?= base_url('admin/profil') ?>" class="menu-link <?= strpos(uri_string(), 'admin/profil') === 0 ? 'active' : '' ?>">
                     <i data-lucide="info" style="width: 18px; height: 18px;"></i>
                     <span>Profil Desa</span>
+                </a>
+            </li>
+            <li>
+                <a href="<?= base_url('admin/slider') ?>" class="menu-link <?= strpos(uri_string(), 'admin/slider') === 0 ? 'active' : '' ?>">
+                    <i data-lucide="sliders" style="width: 18px; height: 18px;"></i>
+                    <span>Hero Banner Slider</span>
                 </a>
             </li>
             <li>

@@ -69,16 +69,15 @@
         }
 
         .brand-logo-badge {
-            width: 68px;
-            height: 68px;
+            width: 72px;
+            height: 72px;
             margin: 0 auto 1rem;
-            background: #dcfce7;
-            border-radius: 50%;
+            background: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary);
-            box-shadow: 0 4px 12px rgba(21, 128, 61, 0.15);
+            border: none;
+            box-shadow: none;
         }
 
         .brand-title {
@@ -224,8 +223,8 @@
 <body>
     <div class="login-card">
         <div class="brand-header">
-            <div class="brand-logo-badge" style="padding: 6px; background: #ffffff; border: 2px solid #e2e8f0;">
-                <img src="<?= base_url('images/logo.webp') ?>" alt="Logo Desa" style="width: 100%; height: 100%; object-fit: contain;">
+            <div class="brand-logo-badge">
+                <img src="<?= base_url('images/logo.webp') ?>" alt="Logo Desa" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));">
             </div>
             <h1 class="brand-title">Panel Administrasi Desa</h1>
             <p class="brand-sub">Desa Batu Bingkung, Kec. Pasimarannu</p>

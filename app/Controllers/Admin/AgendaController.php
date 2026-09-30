@@ -38,7 +38,7 @@ class AgendaController extends BaseController
             'lokasi'          => 'required|max_length[255]',
             'penyelenggara'   => 'permit_empty|max_length[150]',
             'deskripsi'       => 'permit_empty',
-            'status'          => 'required|in_list[akan_datang,berlangsung,selesai]',
+            'status'          => 'required|in_list[akan_datang,berlangsung,selesai,dibatalkan]',
         ];
 
         if (! $this->validate($rules)) {
@@ -92,7 +92,7 @@ class AgendaController extends BaseController
             'lokasi'          => 'required|max_length[255]',
             'penyelenggara'   => 'permit_empty|max_length[150]',
             'deskripsi'       => 'permit_empty',
-            'status'          => 'required|in_list[akan_datang,berlangsung,selesai]',
+            'status'          => 'required|in_list[akan_datang,berlangsung,selesai,dibatalkan]',
         ];
 
         if (! $this->validate($rules)) {
